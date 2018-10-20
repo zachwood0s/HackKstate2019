@@ -19,6 +19,7 @@ window.onload = () =>{
     socket.emit(Events.PLAYER_JOINED);
 
     socket.on(Events.PLAYER_ID, (player: Player) => {
+        console.log("Player ID recieved!", player);
         setupGame(player);
     });
 }
@@ -35,6 +36,11 @@ function setupGame(player: Player){
             updater.CloseSelectedPlanetsList();
         }
     }
+
+    socket.on(Events.SERVER_TICK, function(planets: Planet[]){
+        updater.UpdatePlanets(planets);
+        console.log("recieved server tick", planets);
+    });
 }
 
 

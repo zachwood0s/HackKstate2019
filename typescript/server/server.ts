@@ -5,6 +5,7 @@ import {PageController} from './pages';
 import * as http from 'http';
 import {sockets} from './sockets';
 import * as socketIo from 'socket.io'; 
+import { Game } from './Game';
 
 
 // Create a new express application instance
@@ -25,6 +26,8 @@ server.listen(port, () => {
     console.log(`Listening at http://localhost:${port}/`);
 });
 
-sockets(io);
+let game = new Game(10, io);
+game.StartGame();
+sockets(io, game);
 
 export{port}

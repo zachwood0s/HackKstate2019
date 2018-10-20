@@ -33,6 +33,7 @@ class Planet{
 
     public spriteData: SpriteData           = new SpriteData()
     public position: Vector                 = new Vector(0, 0);
+    public size: number                     = 0;
     public focus: Focus                     = Focus.Unfocused;
     public inputs: Array<Link>              = [];
     public outputs: Array<Link>             = [];
