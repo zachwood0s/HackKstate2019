@@ -6,7 +6,7 @@ class Canvas {
     private canvas: HTMLCanvasElement;
 
     constructor() {
-        this.canvas = <HTMLCanvasElement>document.getElementById('screen');
+        this.canvas = <HTMLCanvasElement>document.getElementById('mainScreen');
         this.canvas.width = this.Width;
         this.canvas.height = this.Height;
         this.Ctx = this.canvas.getContext("2d");
