@@ -7,7 +7,7 @@ class PlanetServ extends Planet{
     public Update(){
      this.UpdateOutputs(1);   
     }
-
+    
     public static DownCast(planet : Planet) : PlanetServ{
         let planetServ = new PlanetServ(planet.name, planet.carryingCapacity, planet.reasourceDensity);
         planetServ.focus = planet.focus;
@@ -18,8 +18,6 @@ class PlanetServ extends Planet{
         planetServ.buffers = planet.buffers;
         return planetServ;
     }
-
- 
 
     public UpdateOutputs(dt : number){
         for(let output of this.outputs){
@@ -54,6 +52,10 @@ class PlanetServ extends Planet{
 
     public Attack(){
 
+    }
+
+    public CheckOwner(){
+        
     }
 
 }
