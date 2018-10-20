@@ -16,7 +16,7 @@ class PlanetDraw {
         this._size = size;
 
         this._planetSprite = null;
-        this._selection = new HoverDraw(ctx, position, size + 10)
+        this._selection = new HoverDraw(ctx, position, size)
     }
 
     public CreateSpriteAnimation(spriteSheet : string, windowPosition : Vector, windowSize : Vector, 
@@ -38,7 +38,8 @@ class PlanetDraw {
     }
 
     public Render() : void {
-        if (this._planetSprite != null) this._planetSprite.Draw()
+        this._selection.Render();
+        if (this._planetSprite != null) this._planetSprite.Draw();      
     }
 }
 

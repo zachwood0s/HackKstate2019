@@ -1,5 +1,5 @@
 import {PlanetServ} from './PlanetServ';
-import { Link } from '../shared/link';
+import { Link } from '../shared/Link';
 import { ResourceType } from '../shared/globals';
 import {Planet} from '../shared/Planet';
 class Game{

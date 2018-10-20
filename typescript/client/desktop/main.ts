@@ -3,32 +3,33 @@ import { Vector } from "../../shared/Vector";
 import { PlanetDraw } from "./PlanetDraw";
 import {Planet} from "../../shared/Planet";
 import { SpriteData } from "./RenderSprite";
+import { Player } from "../../shared/Player";
 
-const PLANET_SIZE : number = .1;
+const PLANET_SIZE : number = .5;
 const SPRITE_DATA : Array<SpriteData> = 
-    [new SpriteData("./Content/planetTest.png", new Vector(0,0), new Vector(50, 50), 1000, 40)]
+    [new SpriteData("./Content/planetTest.png", new Vector(0,0), new Vector(100, 100), 250, 40)]
 
 let canvas : Canvas;
 let planetCount : number;
-let planets : Array<Planet>;
-let drawPlanets : Array<PlanetDraw>;
+let planets : Array<Planet> = [];
+let drawPlanets : Array<PlanetDraw> = [];
 
 window.onload = () => {
     canvas = new Canvas();
 
-    // Temp
-    planetCount = 1;
-    let firstPlanet = new Planet("test", 100, 100)
-    planets.push(firstPlanet);
+    planets = GeneratePlanets(10, canvas.Width, canvas.Height, 30)
+    planets[2].hovered = [new Player(2), new Player(1)]
+    planets[5].owner = new Player(2)
 
     // Create Planet Draw Objects
-    planets.forEach(planet => {
-        let drawPlanet = AddPlanet(firstPlanet);
+    planetCount = planets.length;
+    for (let planet of planets) {
+        let drawPlanet = AddPlanet(planet);
         if(drawPlanet != null){
-             SetPlanet(drawPlanet, firstPlanet, SPRITE_DATA[0]);
+            SetPlanet(drawPlanet, planet, SPRITE_DATA[0]);
             drawPlanets.push(drawPlanet);
         }
-    });
+    }
 
     let render = () => {
         canvas.Clear();
@@ -43,18 +44,30 @@ window.onload = () => {
 }
 
 // Temp
-function GeneratePlanets(amount: number, screenWidth : number, screenHeight : number, rand : number){
+function GeneratePlanets(amount: number, screenWidth : number, screenHeight : number, rand : number) : Array<Planet> {
     let planets : Array<Planet> = []
     let ratio : number = screenWidth / screenHeight;
     for (let i = 0; i < amount; i++) {
         let p = new Planet("Planet " + (i+1), 100, 100)
+        planets.push(p)
     }
-    let xI = screenWidth / amount;
-    for(let x = 0; x < screenWidth; x += xI) {
-        for (let y = 0; y < screenHeight; y += screenWidth / ratio) {
 
+    // Setting position
+    let xI = screenWidth / Math.sqrt((amount) * ratio);
+    let yI = screenHeight / Math.sqrt((amount) * ratio);
+    let pc = 0;
+    for(let x = xI; x < screenWidth; x += xI) {
+        for (let y = yI; y < screenHeight; y += yI) {
+            if (pc >= planets.length) return planets
+            let rx = Math.random() * rand;
+            if(Math.random() > .5) rx *= -1;
+            let ry = Math.random() * rand;
+            if(Math.random() > .5) ry *= -1;
+            planets[pc].position = new Vector(x + rx, y + ry);
+            pc++
         }
     }
+    return planets;
 }
 
 function AddPlanet(planet : Planet) : PlanetDraw | null {
@@ -70,7 +83,7 @@ function SetPlanet(drawPlanet: PlanetDraw, planet : Planet, sprite : SpriteData)
         drawPlanet.AddHover(player.ID + 1);
     });
 
-    if (planet.owner != null) drawPlanet.SetOwner(planet.owner.ID);
+    if (planet.owner != null) drawPlanet.SetOwner(planet.owner.ID + 1);
 }
 
 
