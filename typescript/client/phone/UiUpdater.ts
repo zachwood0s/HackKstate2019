@@ -1,5 +1,7 @@
 import { Planet } from "../../shared/Planet";
 import {Buffer} from "../../shared/Planet";
+import { Events } from "../../shared/events";
+import { Player } from "../../shared/Player";
 export class UIUpdater{
     private _uiElements = {
         InsOutsList: document.getElementById("insOutsList"),
@@ -8,9 +10,13 @@ export class UIUpdater{
     }
 
     private _planets: Planet[];
+    private _socket: SocketIOClient.Socket;
+    private _player: Player;
 
-    constructor(){
+    constructor(socket: SocketIOClient.Socket, player: Player){
         this._planets = [];
+        this._socket = socket;
+        this._player = player;
     }
 
     private _ToggleInOutList(planet: Planet, input: boolean){
@@ -79,7 +85,12 @@ export class UIUpdater{
             planetDiv.appendChild(planetIcon);
             planetDiv.appendChild(planetName);
 
-            unOwnedPlanets.appendChild(planetDiv);
+            if(planet.owner && planet.owner.ID == this._player.ID){
+                ownedPlanets.appendChild(planetDiv);
+            }
+            else{
+                unOwnedPlanets.appendChild(planetDiv);
+            }
 
             let UIUpdater = this;
             planetDiv.onclick = function(){
@@ -97,6 +108,8 @@ export class UIUpdater{
             this._uiElements.SelectedPlanet.style.left = "0px";
             console.log(document.getElementById("outputButton"));
         }
+
+        this._socket.emit(Events.SELECTED_PLANET, planet.name);
     }
 
     public CloseSelectedPlanetsList(){
@@ -171,15 +184,17 @@ export class UIUpdater{
 
         //Input/Output buttons
         let inputOutputButtons = this._CreateDiv("inOutButtons");
-        let inputButton = this._CreateDiv("inputButton", "button", "white", "colorDark");
-        inputButton.innerHTML = "Inputs";
-        inputButton.onclick = this._ToggleInOutList(planet, true);
+        if(planet.owner && planet.owner.ID == this._player.ID){
+            let inputButton = this._CreateDiv("inputButton", "button", "white", "colorDark");
+            inputButton.innerHTML = "Inputs";
+            inputButton.onclick = this._ToggleInOutList(planet, true);
+            inputOutputButtons.appendChild(inputButton);
+        }
 
         let outputButton = this._CreateDiv("outputButton", "button", "white", "colorDark");
         outputButton.innerHTML = "Outputs";
         outputButton.onclick = this._ToggleInOutList(planet, false);
 
-        inputOutputButtons.appendChild(inputButton);
         inputOutputButtons.appendChild(outputButton);
         console.log(outputButton)
         
