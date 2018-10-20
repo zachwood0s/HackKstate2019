@@ -17,4 +17,4 @@
       document.body.appendChild(pre);
     }
   }
-}({"message":"typescript/client/phone/main.ts(3,18): Error TS2554: Expected 3 arguments, but got 1.","line":3,"column":18,"name":"TypeScript error","fileName":"typescript/client/phone/main.ts"})
+}({"message":"typescript/server/server.ts(7,27): Error TS2307: Cannot find module 'socket.io'.","line":7,"column":27,"name":"TypeScript error","fileName":"typescript/server/server.ts"})

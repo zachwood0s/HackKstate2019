@@ -4,7 +4,7 @@ var Canvas = /** @class */ (function () {
     function Canvas() {
         this.Height = window.innerHeight;
         this.Width = window.innerWidth;
-        this.canvas = document.getElementById('screen');
+        this.canvas = document.getElementById('mainScreen');
         this.canvas.width = this.Width;
         this.canvas.height = this.Height;
         this.Ctx = this.canvas.getContext("2d");
