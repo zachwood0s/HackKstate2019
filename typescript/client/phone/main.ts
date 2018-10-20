@@ -2,27 +2,29 @@ import {Events} from '../../shared/events';
 import { Planet } from '../../shared/Planet';
 import * as MenuClicks from './menuOnclicks';
 import {UIUpdater} from './UiUpdater';
+import { Player } from '../../shared/Player';
 
 let socket = io();
 
 socket.on("connect", ()=>{
     console.log("Connected to server!");
-
-    socket.emit(Events.PLAYER_JOINED);
 })
 
 socket.on(Events.SERVER_TICK, (planets: Planet[])=>{
 
 });
 
-socket.on(Events.OWNED_PLANET, (planet: Planet) => {
-
-});
 
 window.onload = () =>{
-    let updater = new UIUpdater();
+    socket.emit(Events.PLAYER_JOINED);
 
-    updater.SetupOnClicks();
+    socket.on(Events.PLAYER_ID, (player: Player) => {
+        setupGame(player);
+    });
+}
+
+function setupGame(player: Player){
+    let updater = new UIUpdater(socket, player);
 
     let testPlanet = new Planet("Earth", 70, 40);
     updater.UpdatePlanets([testPlanet, new Planet("Mars", 60, 20), new Planet("Your Anus", 100, 100)]);
@@ -35,8 +37,4 @@ window.onload = () =>{
     }
 }
 
-
-function setupTestPlanets(){
-
-}
 

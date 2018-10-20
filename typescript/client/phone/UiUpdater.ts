@@ -1,39 +1,53 @@
 import { Planet } from "../../shared/Planet";
 import {Buffer} from "../../shared/Planet";
+import { Events } from "../../shared/events";
+import { Player } from "../../shared/Player";
 export class UIUpdater{
     private _uiElements = {
-        InputButton: document.getElementById("inputButton"),
-        OutputButton: document.getElementById("outputButton"),
         InsOutsList: document.getElementById("insOutsList"),
         PlanetList: document.getElementById("planetList"),
         SelectedPlanet: document.getElementById("selectedPlanet")
     }
 
     private _planets: Planet[];
+    private _socket: SocketIOClient.Socket;
+    private _player: Player;
 
-    constructor(){
+    constructor(socket: SocketIOClient.Socket, player: Player){
         this._planets = [];
+        this._socket = socket;
+        this._player = player;
     }
 
-
-    public SetupOnClicks(){
-        let leftPosition = window.getComputedStyle(document.body).getPropertyValue('--selected-planet-bar-width');
-
-        let listIsOpen =false;
-        const toggleInOutList = ()=>{
+    private _ToggleInOutList(planet: Planet, input: boolean){
+        return () => {
             if(this._uiElements.InsOutsList){
-                if(!listIsOpen){
-                    this._uiElements.InsOutsList.style.left = leftPosition;
-                    listIsOpen = true;
+                let isOpen = this._uiElements.InsOutsList.offsetLeft > 0;
+                if(isOpen){
+                    this._CloseInOutList();
+                    isOpen = false;
                 }
                 else{
-                    this._uiElements.InsOutsList.style.left = "0px";
-                    listIsOpen = false;
+                    this._OpenInOutList(planet, input);
+                    isOpen = true;
                 }
             }
         }
-        if(this._uiElements.InputButton) this._uiElements.InputButton.onclick = toggleInOutList;
-        if(this._uiElements.OutputButton) this._uiElements.OutputButton.onclick = toggleInOutList;
+    }
+
+    private _OpenInOutList(planet: Planet, input: boolean){
+        console.log("Opening ins-outs list for planet: ",planet);
+        let leftPosition = window.getComputedStyle(document.body).getPropertyValue('--selected-planet-bar-width');
+        if(this._uiElements.InsOutsList){
+            this._uiElements.InsOutsList.style.left = leftPosition;
+        }
+    }
+
+    private _CloseInOutList(){
+        let leftPosition = "-400px";
+        if(this._uiElements.InsOutsList){
+            this._uiElements.InsOutsList.style.left = leftPosition;
+        }
     }
 
     public UpdatePlanets(planets: Planet[]){
@@ -71,7 +85,12 @@ export class UIUpdater{
             planetDiv.appendChild(planetIcon);
             planetDiv.appendChild(planetName);
 
-            unOwnedPlanets.appendChild(planetDiv);
+            if(planet.owner && planet.owner.ID == this._player.ID){
+                ownedPlanets.appendChild(planetDiv);
+            }
+            else{
+                unOwnedPlanets.appendChild(planetDiv);
+            }
 
             let UIUpdater = this;
             planetDiv.onclick = function(){
@@ -85,9 +104,12 @@ export class UIUpdater{
 
         if(this._uiElements.SelectedPlanet && planet){
             this._uiElements.SelectedPlanet.innerHTML = "";
-            this._uiElements.SelectedPlanet.innerHTML = this._CreateSelectedPlanetHTML(planet).innerHTML;
+            this._CreateSelectedPlanetHTML(this._uiElements.SelectedPlanet, planet).innerHTML;
             this._uiElements.SelectedPlanet.style.left = "0px";
+            console.log(document.getElementById("outputButton"));
         }
+
+        this._socket.emit(Events.SELECTED_PLANET, planet.name);
     }
 
     public CloseSelectedPlanetsList(){
@@ -96,14 +118,15 @@ export class UIUpdater{
         }
     }
 
-    private _CreateSelectedPlanetHTML(planet: Planet): HTMLDivElement{
-        let selectedPlanet = this._CreateDiv("selectedPlanet", "dark");
-
+    private _CreateSelectedPlanetHTML(selectedPlanet: HTMLElement, planet: Planet): HTMLElement{
         //Icon stuff
         let mainIcon = this._CreateDiv(undefined, "mainIcon");
         let planetIcon = this._CreateDiv("tempPlanetIcon", "white");
         let planetName = this._CreateDiv("planetName", "colorWhite");
         planetName.innerHTML = planet.name;
+        planetName.onclick = function(){
+            console.log("stupd");
+        }
 
         let iconStats = this._CreateDiv("iconStats");
         let createStat = (id: string, iconName: string, value: number, direction: number): HTMLElement => {
@@ -161,20 +184,27 @@ export class UIUpdater{
 
         //Input/Output buttons
         let inputOutputButtons = this._CreateDiv("inOutButtons");
-        let inputButton = this._CreateDiv("inputButton", "button", "white", "colorDark");
-        inputButton.innerHTML = "Inputs";
+        if(planet.owner && planet.owner.ID == this._player.ID){
+            let inputButton = this._CreateDiv("inputButton", "button", "white", "colorDark");
+            inputButton.innerHTML = "Inputs";
+            inputButton.onclick = this._ToggleInOutList(planet, true);
+            inputOutputButtons.appendChild(inputButton);
+        }
 
         let outputButton = this._CreateDiv("outputButton", "button", "white", "colorDark");
         outputButton.innerHTML = "Outputs";
+        outputButton.onclick = this._ToggleInOutList(planet, false);
 
-        inputOutputButtons.appendChild(inputButton);
         inputOutputButtons.appendChild(outputButton);
+        console.log(outputButton)
         
         selectedPlanet.appendChild(mainIcon);
         selectedPlanet.appendChild(hr);
         selectedPlanet.appendChild(mineral);
         selectedPlanet.appendChild(capacity);
         selectedPlanet.appendChild(inputOutputButtons);
+
+        console.log(outputButton)
 
         return selectedPlanet;
     }

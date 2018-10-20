@@ -121,6 +121,7 @@ hr{
 	transition: 500ms cubic-bezier(.75,-0.5,0,1.75);
 }
 
+
 /****** Icon area ******/
 
 .mainIcon{
@@ -285,14 +286,17 @@ hr{
 /* This is used so that theirs no gap when 
  * the insOutList does its elastic transition
  */
-#insOutsList::before{
+#insOutsList::before, #selectedPlanet::before{
     content: "";
-    --width: 100px;
+    --width: 150px;
     width:var(--width);
     height:100%;
     position:absolute;
     left:calc(var(--width) * -.9);
     background:var(--color-darkish);
+}
+#selectedPlanet::before{
+    background:var(--color-dark);
 }
 
 

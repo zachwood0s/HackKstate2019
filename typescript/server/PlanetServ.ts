@@ -31,73 +31,73 @@ class PlanetServ extends Planet{
             }else{
                 outQuantityMax = outQuantitySet;
             }
-            let netLost = 0;
 
-            if(output.type == ResourceType.Millitary && output.from.owner != output.to.owner){
+            let amountUsed = 0;
+
+            if(output.type == ResourceType.Millitary && output.from.owner != output.to.owner && output.from.owner != output.to.partialForceOwner){
+                //Attack is happening
                 
-                if(!output.to.owner){
-                    //Attacking an unowned planet
-                    if(output.to.partialForceOwner == output.from.owner){
-                        //Adding to partial force
-                        let overage = (<PlanetServ>output.to).Receive(
-                            outQuantityMax, 
-                            ResourceType.Millitary);
-                        netLost = outQuantityMax - overage;
-                        
+                let newMil = output.to.buffers.quantities[ResourceType.Millitary] - outQuantityMax;
+
+                if(newMil < 0){//Defending force has lost
+                    newMil = Math.abs(newMil);
+                    
+                    if(newMil > Buffer.BUFFER_MAX){//set quantities
+                        output.to.buffers.quantities[ResourceType.Millitary] = Buffer.BUFFER_MAX;
+                        let overage = newMil - Buffer.BUFFER_MAX;
+                        amountUsed = outQuantityMax - overage;
                     }else{
-                        //Partial force has lost
-                        let newMil = output.to.buffers.quantities[ResourceType.Millitary] - outQuantityMax;
-
-                        if(newMil < 0){
-                            newMil = Math.abs(newMil);
-                            output.to.buffers.quantities[ResourceType.Millitary] = newMil;
-
-                            if(newMil > output.to.occupyingForce){
-                                output.to.owner = output.from.owner;
-                                output.to.partialForceOwner = null;
-
-                            }else{
-                                output.to.owner = null;
-                                output.to.partialForceOwner = output.from.owner;
-                            }
-
-                        }else{
-                            //Partial force is surviving
-                            if(newMil < output.to.occupyingForce){
-                                output.to.owner = null;
-                            }
-                        }
+                        amountUsed = outQuantityMax;
+                        output.to.buffers.quantities[ResourceType.Millitary] = newMil;
                     }
-                }else{
-                    //Attacking an owned planet
 
+                    if(newMil > output.to.occupyingForce){//set owners
+                        output.to.owner = output.from.owner;
+                        output.to.partialForceOwner = null;
+                    }else{
+                        output.to.owner = null;
+                        output.to.partialForceOwner = output.from.owner;
+                    }
+
+                }else{//Defending force is surviving
+                    
+                    output.to.buffers.quantities[ResourceType.Millitary] = newMil;
+                    amountUsed = outQuantityMax;
+
+                    if(newMil < output.to.occupyingForce){
+                        output.to.owner = null;
+                    }
                 }
-                output.to.buffers.quantities[output.type] -= netLost;
-            }else{
+                output.from.buffers.quantities[ResourceType.Millitary] -= amountUsed;
+            }
+            else{
                 //Adding reasource types if not an attack
-                (<PlanetServ>output.to).Receive(this.buffers.quantities[output.type], output.type);
+                amountUsed = outQuantityMax - (<PlanetServ>output.to).Receive(outQuantityMax, output.type);
+                output.from.buffers.quantities[output.type] -= amountUsed;
+                console.log("ammount", amountUsed);
             }
 
-            
+            output.from.buffers.quantities[ResourceType.Material] -= amountUsed;
         }
     }
 
     public Receive(amount : number, type : ResourceType) : number{
 
         let total = this.buffers.quantities[type] + amount;
+        let overage;
 
         if(total > Buffer.BUFFER_MAX) {
             this.buffers.quantities[type] = Buffer.BUFFER_MAX;
-            return (total - Buffer.BUFFER_MAX);
+            overage = (total - Buffer.BUFFER_MAX);
         }else{
             this.buffers.quantities[type] = total;
-            return 0;
+            overage = 0;
         }
-
+        return 0;
     }
 
-    public Attack(target: Player){
-
+    public updateAttackState(){
+     //   if(this.buffers.quantities[ResourceType.Millitary])
     }
 
     public UpdateOwner(attacker?: Player){
