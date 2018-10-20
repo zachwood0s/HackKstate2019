@@ -23,13 +23,14 @@ class Planet{
     public carryingCapacity: number;
     public occupyingForce = 10;
 
-    public position: Vector         = new Vector(0, 0);
-    public focus: Focus             = Focus.Unfocused;
-    public inputs: Array<Link>      = [];
-    public outputs: Array<Link>     = [];
-    public owner: Player | null     = null;
-    public hovered: Array<Player>   = [];
-    public buffers: Buffer          = new Buffer();
+    public position: Vector                 = new Vector(0, 0);
+    public focus: Focus                     = Focus.Unfocused;
+    public inputs: Array<Link>              = [];
+    public outputs: Array<Link>             = [];
+    public owner: Player | null             = null;
+    public hovered: Array<Player>           = [];
+    public buffers: Buffer                  = new Buffer();
+    public partialForceOwner: Player | null = null;
 
     constructor(nameIn: string, carryingCapacityIn: number, reasourceDensityIn: number){
         this.name = nameIn;
