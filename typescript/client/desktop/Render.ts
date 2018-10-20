@@ -51,11 +51,13 @@ class Render {
                             this._size.x, this._size.y)
     }
 
-    public MoveObject(startPosition : Vector, endPosition : Vector, speed : number = 1) : void {
-        let difX : number = endPosition.x - startPosition.x;
-        let difY : number = endPosition.y - startPosition.y;
-        this._position.x += difX * speed * .01;
-        this._position.y += difY * speed * .01;
+    public MoveObject(endPosition : Vector, speed : number = 1) : void {
+        let difX : number = endPosition.x - this._position.x;
+        let difY : number = endPosition.y - this._position.y;
+        if(Math.abs(difX) > speed && Math.abs(difY) > speed){
+            this._position.x += difX * speed;
+            this._position.y += difY * speed;
+        }
     }
 }
 
