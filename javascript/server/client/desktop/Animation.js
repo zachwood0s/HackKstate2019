@@ -15,7 +15,8 @@ var Animation = /** @class */ (function () {
         this._frame = 0;
         this._startTime = 0;
     }
-    //public SetPosition
+    Animation.prototype.SetPosition = function (position, size) {
+    };
     Animation.prototype.Draw = function (x, y, width, height) {
         if (((Date.now() - this._startTime) / 1000) > (this._speed / this._windowTicks)) {
             this._frame++;

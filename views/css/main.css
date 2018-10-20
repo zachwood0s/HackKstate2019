@@ -1,0 +1,239 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto|Rubik:400,700');
+
+:root{
+    --selected-planet-bar-width: 350px;
+    --selected-planet-icon-area-height: 200px;
+    --selected-planet-icon-size: 100px;
+    --selected-planet-icon-padding-top: calc((var(--selected-planet-icon-area-height) - var(--selected-planet-icon-size)) / 2);
+    --selected-planet-icon-padding-side: calc((var(--selected-planet-bar-width) - var(--selected-planet-icon-size)) / 2);
+
+    --color-dark: #212121;
+    --color-white: #eeeeee;
+    --color-red: #F44336;
+    --color-green: #4CAF50;
+    --color-darkish: #455A64;
+}
+
+body{
+    font-family: 'Rubik', sans-serif;
+    font-size:20px;
+    background: var(--color-white);
+}
+.roboto{
+    font-family: 'Roboto', sans-serif;
+}
+
+.dark{
+    background:var(--color-dark);
+}
+.darkish{
+    background:var(--color-darkish);
+}
+.white{
+    background:var(--color-white);
+}
+.colorWhite{
+    color:var(--color-white);
+}
+.colorDark{
+    color:var(--color-dark);
+}
+
+hr{
+    width:80%;
+    margin-left:10%;
+    border:0;
+    height:3px;
+}
+
+
+/**********************************/
+/*      Selected Planet Menu      */
+/**********************************/
+
+#selectedPlanet{
+    width: var(--selected-planet-bar-width);
+    height:100%;
+    position:fixed;
+    left:0;
+    top:0;
+    box-shadow:0 0 10px #222;
+    z-index:2;
+}
+
+/****** Icon area ******/
+
+.mainIcon{
+    width: var(--selected-planet-bar-width);
+    height: var(--selected-planet-icon-area-height);
+    position:relative;
+}
+
+#tempPlanetIcon{
+    width:var(--selected-planet-icon-size);
+    height:var(--selected-planet-icon-size);
+    position:absolute;
+    left:var(--selected-planet-icon-padding-side);
+    top:calc(var(--selected-planet-icon-padding-top) - 20px);
+    border-radius:50%;
+}
+
+#planetName{
+    position:absolute;
+    width:100%;
+    text-align:center;
+    bottom:5px;
+    font-size:40px;
+    font-weight:bold;
+}
+
+.iconStat{
+    --side-padding: 50px;
+    --top-padding: 20px;
+    --bottom-padding:60px;
+    font-size:15px;
+    font-weight: bold;
+    position:absolute;
+    color : var(--color-white);
+}
+
+.iconStat.importing{
+    color: var(--color-red);
+}
+
+.iconStat.exporting{
+    color: var(--color-green);
+}
+
+.iconStat.exporting::after,
+.iconStat.importing::after{
+    font-family: 'icomoon';
+    speak: none;
+    font-style:normal;
+    font-weight:normal;
+    font-variant:normal;
+    text-transform:none;
+    line-height:1;
+}
+
+.iconStat.exporting::after{
+    content:"\ea32";
+}
+
+.iconStat.importing::after{
+    content:"\ea36";
+}
+
+.iconStat:nth-child(1){
+    left:var(--side-padding);
+    top:var(--top-padding);
+}
+
+.iconStat:nth-child(2){
+    right:var(--side-padding);
+    top:var(--top-padding);
+}
+
+.iconStat:nth-child(3){
+    left:var(--side-padding);
+    bottom:var(--bottom-padding);
+}
+
+.iconStat:nth-child(4){
+    right:var(--side-padding);
+    bottom:var(--bottom-padding);
+}
+
+/****** Stat Bars ******/
+
+.stat{
+    position:relative;
+    top:30px;
+    height:40px;
+}
+.stat .name{
+    position:relative;
+    float:left;
+    font-size:15px;
+    padding-left:10px;
+    font-weight:bold;
+}
+.stat .bar{
+    box-sizing:border-box;
+    width: 55%;
+    height:20px;
+    position:absolute;
+    right:10px;
+    border-radius:10px;
+    border:3px solid var(--color-white);
+}
+.stat .bar::before{
+    content:"";
+    width:var(--bar-width);
+    height:100%;
+    background:var(--color-white);
+    position:absolute;
+    left:0;
+    top:0;
+}
+
+/****** Buttons ******/
+
+.button{
+   --height: 60px;
+   cursor:pointer; 
+   height:var(--height);
+   line-height: var(--height);
+}
+
+#inOutButtons{
+    --padding: 20px;
+    --width: calc(var(--selected-planet-bar-width) - var(--padding) * 2);
+    position:absolute;
+    bottom:0;
+    margin-bottom:var(--padding);
+    left:var(--padding);
+    width:var(--width);
+}
+
+#inOutButtons .button{
+    width:100%;
+    float: left;
+    margin:5px 0px;
+    text-align:center;
+    position:relative;
+    font-weight:bold;
+}
+
+
+/***************************/
+/*      Ins Outs List      */
+/***************************/
+
+#insOutsList{
+    position:absolute;
+    left:0;
+    top:0;
+    width:var(--selected-planet-bar-width);
+    height:100%;
+    /*
+    transition: .5s ease-in-out;
+    */
+	transition: 500ms cubic-bezier(.75,-0.5,0,1.75);
+}
+
+/* This is used so that theirs no gap when 
+ * the insOutList does its elastic transition
+ */
+#insOutsList::before{
+    content: "";
+    --width: 100px;
+    width:var(--width);
+    height:100%;
+    position:absolute;
+    left:calc(var(--width) * -.9);
+    background:var(--color-darkish);
+}
+
+
+
