@@ -8,7 +8,6 @@ class PlanetServ extends Planet{
 
     public Update(){
      this.UpdateOutputs(1);   
-     this.UpdateOwner();
     }
     
     public static DownCast(planet : Planet) : PlanetServ{
@@ -21,7 +20,12 @@ class PlanetServ extends Planet{
         planetServ.buffers = planet.buffers;
         return planetServ;
     }
-
+    public Produce(dt : number){
+        let focusType : ResourceType;
+        switch(this.focus){
+            case Fou
+        }
+    }
     public UpdateOutputs(dt : number){
         for(let output of this.outputs){
             if(this.owner != null){
@@ -123,17 +127,6 @@ class PlanetServ extends Planet{
             }
         }
     }
-
-    public UpdateOwner(attacker?: Player){
-
-        if(this.buffers.quantities[ResourceType.Millitary] < this.occupyingForce){
-            this.owner = null;
-        }else if(attacker){
-            this.owner = attacker;
-        }
-
-    }
-
 }
 
 export{PlanetServ};
