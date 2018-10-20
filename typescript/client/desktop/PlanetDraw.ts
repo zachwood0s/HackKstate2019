@@ -44,15 +44,27 @@ class PlanetDraw {
         this._selection.SetOwner(playerNum);
     }
 
-    public AddTransfer(endpos : Vector, restype : ResourceType) {
+    public AddTransfer(endpos : Vector, restype : ResourceType, speed : number, id : number) {
         let pos = new Vector(this._position.x + (this._size / 2), this._position.y + (this._size / 2));
         let end = new Vector(endpos.x + this._size / 2, endpos.y + this._size / 2);
         let rad = this._selection.OWNERSPACE + (this._size / 2)
-        this._transfers.push(new TransferDraw(this._ctx, pos, end, rad, restype))
+        let add = true;
+        let trans = new TransferDraw(this._ctx, pos, end, rad, restype, speed, id)
+        this._transfers.forEach(t => {
+            if (t._resource == restype) add = false;
+        });
+        if(add) {
+            this._transfers.push(trans)
+        }
     }
 
-    public RemoveTransfers(){
-        this._transfers = [];
+    public RemoveTransfer(id : number){
+        for (let i = 0; i < this._transfers.length; i++){
+            if(this._transfers[i]._ID == id) {
+                this._transfers.splice(i, 1);
+                break;
+            }
+        }
     }
 
     public Render() : void {

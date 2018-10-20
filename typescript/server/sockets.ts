@@ -10,6 +10,8 @@ const sockets = (io: socketIo.Server, game: Game) =>{
         console.log("a player has connected");
 
         let player: Player | null;
+
+        
         socket.on(Events.SCREEN_PAIRED, function(){
             console.log('Screen has been paired!');
             game.PairScreen(socket);

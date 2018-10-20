@@ -3,7 +3,7 @@ import {ResourceType} from "./globals";
 import {Link} from "./Link";
 import { Vector } from "./Vector";
 
-enum Focus {
+export enum Focus {
     Unfocused,
     Labor,
     Material,
@@ -12,12 +12,12 @@ enum Focus {
 }
 
 
-class Buffer{
+export class Buffer{
     public static readonly BUFFER_MAX : number = 100;
     public quantities : number[] = [0,0,0];
 }
 
-class SpriteData {
+export class SpriteData {
     public Src : string = "";
     public WindowPosition : Vector = new Vector(0, 0);
     public WindowSize : Vector = new Vector(0, 0);
@@ -25,7 +25,7 @@ class SpriteData {
     public Speed : number = 1;
 }
 
-class Planet{
+export class Planet{
     public name: string;
     public reasourceDensity: number;
     public carryingCapacity: number;
@@ -48,6 +48,3 @@ class Planet{
         this.reasourceDensity = reasourceDensityIn;
     }
 }
-export{Buffer};
-export{Planet};
-export{SpriteData}

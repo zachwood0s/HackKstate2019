@@ -5,8 +5,7 @@ import {Planet} from "../../shared/Planet";
 import { Player } from "../../shared/Player";
 import { Link } from "../../shared/Link";
 import { ResourceType } from "../../shared/globals";
-
-const PLANET_SIZE : number = .5;
+import { link } from "fs";
 
 let canvas : Canvas;
 let planetCount : number;
@@ -17,26 +16,20 @@ window.onload = () => {
     canvas = new Canvas();
 
     // Temp
-    planets = GeneratePlanets(32, canvas.Width, canvas.Height, 45)
+    planets = GeneratePlanets(32, canvas.Width, canvas.Height, 37)
     planets[2].hovered = [new Player(2), new Player(1)]
     planets[5].owner = new Player(2)
     planets[1].owner = new Player(1)
-    planets[1].outputs = [new Link(planets[1], planets[5], 30, ResourceType.Labor, 1)]
-    for(let i = 0; i < planets.length; i++) {
-        planets[i].spriteData.Src = "./Content/planetTest.png"
-        planets[i].spriteData.WindowPosition = new Vector(0,0);
-        planets[i].spriteData.WindowSize = new Vector(50, 50);
-        planets[i].spriteData.Tics = 200;
-        planets[i].spriteData.Speed = 10;
-    }
-
+    let link = new Link(planets[1], planets[5], 3, ResourceType.Labor, 1);
+    planets[1].outputs = [link]
+    
     InitializeData(planets)
 
     let render = () => {
         canvas.Clear();
 
         ReceiveData(planets);
-        console.log(drawPlanets.length)
+        //RemoveLink(link);
         drawPlanets.forEach(dplanet => {
             dplanet.Render()
         });
@@ -63,12 +56,43 @@ function InitializeData(planets : Array<Planet>) {
     }
 }
 
+function RemoveLink(link : Link) {
+    planets.forEach(planet => {
+        for (let i = 0; i < planet.outputs.length; i++){
+            if(planet.outputs[i].id == link.id) {
+                for(let j = 0; j < drawPlanets.length; j++) {
+                    if(drawPlanets[j].name == planet.name) {
+                        drawPlanets[j].RemoveTransfer(link.id);
+                        console.log("remove")
+                        break;
+                    }
+                }               
+            }
+        }
+    });
+}
+
 // Temp
+let rotSpeed = 8;
+let size = 50;
+let resMin = 50;
+let resMax = 100;
 function GeneratePlanets(amount: number, screenWidth : number, screenHeight : number, rand : number) : Array<Planet> {
+    let resVal = Math.floor(Math.random() * resMax) + resMin;
+    let labVal = Math.floor(Math.random() * resMax) + resMin;
     let planets : Array<Planet> = []
     for (let i = 0; i < amount; i++) {
-        let p = new Planet("Planet " + (i+1), 100, 100)
+        let p = new Planet("Planet " + (i+1), labVal, resVal)
         planets.push(p)
+    }
+
+    // Set Animation
+    for (let i = 0; i < planets.length; i++){
+        planets[i].spriteData.Src = "./Content/PlanetSprites/01.png"
+        planets[i].spriteData.WindowPosition = new Vector(0,0);
+        planets[i].spriteData.WindowSize = new Vector(50, 50);
+        planets[i].spriteData.Tics = 200;
+        planets[i].spriteData.Speed = ((Math.random()/3) + 1) * rotSpeed;
     }
 
     // Setting position
@@ -83,13 +107,13 @@ function GeneratePlanets(amount: number, screenWidth : number, screenHeight : nu
             if(Math.random() > .5) rx *= -1;
             let ry = Math.random() * rand * 2;
             if(Math.random() > .5) ry *= -1;
-            if((x + rx) > (screenWidth - planets[pc].size / 2) || (x + rx) < (planets[pc].size / 2) || 
-                (y + ry) > (screenHeight - planets[pc].size / 2) || (y + ry) < (planets[pc].size / 2)){
+            planets[pc].size = ((Math.random()/3) + 1) * size;
+            if((x + rx) > (screenWidth - planets[pc].size - 10) || (x + rx) < 10 || 
+                (y + ry) > (screenHeight - planets[pc].size -10) || (y + ry) < 10){
                 planets[pc].position = new Vector(x, y);
                 pc++
                 continue;
-            }
-            planets[pc].size = ((Math.random()/10) + 1) * 50;
+            }  
             planets[pc].position = new Vector(x + rx, y + ry);
             pc++;
         }
@@ -113,10 +137,7 @@ function SetPlanet(drawPlanet: PlanetDraw, planet : Planet) : void  {
 
     if (planet.owner != null) drawPlanet.SetOwner(planet.owner.ID + 1);
 
-    drawPlanet.RemoveTransfers();
     planet.outputs.forEach(out => {
-        drawPlanet.AddTransfer(out.to.position, out.type)
+        drawPlanet.AddTransfer(out.to.position, out.type, out.rate, out.id)
     });
 }
-
-
