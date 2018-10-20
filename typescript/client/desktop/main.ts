@@ -1,20 +1,20 @@
 import { Canvas } from "./Canvas";
-import { Render } from "./Render";
+import { RenderSprite } from "./RenderSprite";
 import { Vector } from "../../shared/Vector";
+import { MoveObject } from "./Animations"
 
 window.onload = () =>{
     let canvas = new Canvas();
     if(canvas.Ctx == null) return;
 
-    let planetRender = new Render(canvas.Ctx, "./Content/planetTest.png", new Vector(100, 100), new Vector(100, 100))
-    let staticPlanet = new Render(canvas.Ctx, "./Content/singlePlanetTest.png", new Vector(300, 300), new Vector(100, 100))
-    planetRender.SetAnimationFrame(new Vector(0,0), new Vector(100, 100), 50, 42)
-    staticPlanet.MoveObject(new Vector(200, 200))
+    let planetRender = new RenderSprite(canvas.Ctx, new Vector(100, 100), new Vector(100, 100), "./Content/planetTest.png")
+    let staticPlanet = new RenderSprite(canvas.Ctx, new Vector(300, 300), new Vector(100, 100), "./Content/singlePlanetTest.png")
+    planetRender.SetAnimationFrame(new Vector(0,0), new Vector(100, 100), 50, 10)
 
     let render = () => {
         canvas.Clear();
 
-        staticPlanet.MoveObject(new Vector(1000, 500), 1)
+        MoveObject(staticPlanet.Position, new Vector(1000, 500))
         
         staticPlanet.Draw()
         planetRender.Draw()

@@ -2,15 +2,9 @@
 <html>
     <head>
         <script src="/socket.io/socket.io.js"></script>
-        <script src="javascript/client/desktop/bundle.js"></script>
+        <script src=".././javascript/client/desktop/bundle.js"></script>
     </head>
     <body>
         <canvas id="mainScreen" width="200" height="100"></canvas>
     </body>
-    <script>
-        var socket = new io();
-        socket.on('connect', function(data) {
-            socket.emit('pairScreen');
-        });
-    </script>
 </html>
