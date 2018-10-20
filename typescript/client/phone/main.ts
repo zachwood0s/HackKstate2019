@@ -23,6 +23,16 @@ window.onload = () =>{
     let updater = new UIUpdater();
 
     updater.SetupOnClicks();
+
+    let testPlanet = new Planet("Earth", 70, 40);
+    updater.UpdatePlanets([testPlanet, new Planet("Mars", 60, 20), new Planet("Your Anus", 100, 100)]);
+
+    let clickClearfix = document.getElementById("clickClearfix");
+    if(clickClearfix){
+        clickClearfix.onclick = () => {
+            updater.CloseSelectedPlanetsList();
+        }
+    }
 }
 
 
