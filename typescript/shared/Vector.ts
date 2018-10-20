@@ -7,3 +7,5 @@ class Vector {
         this.y = y
     }
 }
+
+export { Vector }

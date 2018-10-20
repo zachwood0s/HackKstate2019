@@ -1,3 +1,5 @@
+import { Vector } from "../.././shared/Vector";
+
 class Animation {
     private _ctx : CanvasRenderingContext2D;
     private _spriteSheet : HTMLImageElement;
@@ -26,7 +28,9 @@ class Animation {
         this._startTime = 0;
     }
 
-    //public SetPosition
+    public SetPosition(position : Vector, size : Vector) {
+        
+    }
 
     public Draw(x : number, y : number, width : number, height : number) : void {
         if(((Date.now() - this._startTime)/1000) > (this._speed / this._windowTicks)) {
