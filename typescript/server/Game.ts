@@ -65,7 +65,7 @@ export class Game{
         return false;
     }
     
-
+    //////////////////////////////////////////
 
     public update(){
        
@@ -86,6 +86,8 @@ export class Game{
     public EndGame(){
         clearInterval(this.updateInterval);
     }
+    //////////////////////////////////////////
+
 }
 
 class Test{
