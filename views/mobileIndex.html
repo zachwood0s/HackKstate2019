@@ -1,0 +1,52 @@
+
+<html>
+<head>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/javascript/client/phone/bundle.js"></script>
+    <link rel="stylesheet" href="/views/css/main.css">
+    <link rel="stylesheet" href="/views/icomoon/style.css"/>
+</head>
+<body>
+
+    <div id="selectedPlanet" class="dark">
+        <div class="mainIcon">
+            <div id="tempPlanetIcon" class="white"></div>
+            <div id="planetName" class="colorWhite">Earth</div>
+            <div id="iconStats">
+                <div class="iconStat" id="techStat">
+                    <span class="icon-lab"></span>
+                    <span class="value">0</span>
+                </div>
+                <div class="iconStat importing" id="apStat">
+                    <span class="icon-shield"></span>
+                    <span class="value">10</span>
+                </div>
+                <div class="iconStat importing" id="mineralStat">
+                    <span class="icon-cogs"></span>
+                    <span class="value">20</span>
+                </div>
+                <div class="iconStat importing" id="laborStat">
+                    <span class="icon-user"></span>
+                    <span class="value">40</span>
+                </div>
+            </div>
+        </div>  
+        <hr class="white">
+        <div id="stat1" class="stat">
+            <div class="name colorWhite roboto">Mineral Density</div>
+            <div class="bar" style="--bar-width:20%"></div> 
+        </div>
+        <div id="stat2" class="stat">
+            <div class="name colorWhite roboto">Carrying Capacity</div>
+            <div class="bar" style="--bar-width:50%"></div> 
+        </div>
+
+        <div id="inOutButtons">
+            <div id="inputButton" class="button white colorDark">Inputs</div>
+            <div id="outputButton" class="button white colorDark">Outputs</div>
+        </div>
+    </div>
+
+    <div id="insOutsList" class="darkish"></div>
+</body>
+</html>
