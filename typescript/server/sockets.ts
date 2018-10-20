@@ -17,6 +17,8 @@ const sockets = (io: socketIo.Server) =>{
 
         socket.on(Events.PLAYER_JOINED, function(){
             console.log('A player has joined!');
+
+            //socket.emit(Events.PLAYER_ID, )
         })
 
         socket.on(Events.LINK_CREATED, function(){
