@@ -1,5 +1,5 @@
 import {ResourceType} from "./globals";
-import {Planet} from "./planet";
+import {Planet} from "./Planet";
 
 class Link{
     public readonly from: Planet;

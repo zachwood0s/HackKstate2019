@@ -19,6 +19,13 @@ body{
     font-size:20px;
     background: var(--color-white);
 }
+#clickClearfix{
+    position:fixed;
+    width:100%;
+    height:100%;
+    left:0;
+    top:0;
+}
 .roboto{
     font-family: 'Roboto', sans-serif;
 }
@@ -46,6 +53,58 @@ hr{
     height:3px;
 }
 
+/*************************/
+/*      Planet List      */
+/*************************/
+
+#planetList{
+    width:var(--selected-planet-bar-width);
+    height:100%;
+    position:fixed;
+    left:0px;
+    top:0;
+    box-shadow:0 0 10px #222;
+    z-index: 1;
+}
+
+#planetList .sectionHeader{
+    height:20px;
+    font-size:15px;
+    padding:7px 15px;
+    font-weight: bold;
+}
+
+#planetList .planetList{
+    margin-top:20px;
+}
+
+#planetList .planetList:nth-child(1){
+    margin-top:0px;
+}
+
+#planetList .planet{
+    --height: 50px;
+    height:var(--height);
+    position:relative;
+    padding:10px;
+}
+
+#planetList .planet .planetIcon{
+    width:var(--height);
+    height:var(--height);
+    float:left;
+    margin-left:20px;
+    background:var(--color-white);
+}
+
+#planetList .planet .planetName{
+    float:left;
+    font-weight:bold;
+    font-size: 20px;
+    line-height: var(--height);
+    padding:0px 30px;
+    text-align: center;
+}
 
 /**********************************/
 /*      Selected Planet Menu      */
@@ -55,11 +114,13 @@ hr{
     width: var(--selected-planet-bar-width);
     height:100%;
     position:fixed;
-    left:0;
+    left:calc(var(--selected-planet-bar-width) * -1);
     top:0;
     box-shadow:0 0 10px #222;
     z-index:2;
+	transition: 500ms cubic-bezier(.75,-0.5,0,1.75);
 }
+
 
 /****** Icon area ******/
 
@@ -225,14 +286,17 @@ hr{
 /* This is used so that theirs no gap when 
  * the insOutList does its elastic transition
  */
-#insOutsList::before{
+#insOutsList::before, #selectedPlanet::before{
     content: "";
-    --width: 100px;
+    --width: 150px;
     width:var(--width);
     height:100%;
     position:absolute;
     left:calc(var(--width) * -.9);
     background:var(--color-darkish);
+}
+#selectedPlanet::before{
+    background:var(--color-dark);
 }
 
 

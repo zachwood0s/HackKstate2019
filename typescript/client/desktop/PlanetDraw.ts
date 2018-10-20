@@ -1,22 +1,28 @@
 import { Vector } from "../../shared/Vector";
 import { RenderSprite } from "./RenderSprite";
 import { HoverDraw } from "./HoverDraw";
+import { TransferDraw } from "./TransferDraw";
+import { ResourceType } from "../../shared/globals";
+import { Planet } from "../../shared/Planet";
 
 class PlanetDraw {
+    public name : string;
     private _ctx : CanvasRenderingContext2D;
     private _position : Vector;
     private _size : number;
 
     private _planetSprite : RenderSprite | null;
     private _selection : HoverDraw;
+    private _transfers : Array<TransferDraw> = [];
 
-    constructor (ctx : CanvasRenderingContext2D, position : Vector, size : number){
+    constructor (ctx : CanvasRenderingContext2D, position : Vector, size : number, name : string) {
         this._ctx  = ctx;
         this._position = position;
         this._size = size;
+        this.name = name;
 
         this._planetSprite = null;
-        this._selection = new HoverDraw(ctx, position, size + 10)
+        this._selection = new HoverDraw(ctx, position, size)
     }
 
     public CreateSpriteAnimation(spriteSheet : string, windowPosition : Vector, windowSize : Vector, 
@@ -37,8 +43,20 @@ class PlanetDraw {
         this._selection.SetOwner(playerNum);
     }
 
+    public AddTransfer(endpos : Vector, restype : ResourceType) {
+        this._transfers.push(new TransferDraw(this._ctx, this._position, endpos, this._selection.OWNERSPACE, restype))
+    }
+
+    public RemoveTransfers(){
+        this._transfers = [];
+    }
+
     public Render() : void {
-        if (this._planetSprite != null) this._planetSprite.Draw()
+        this._transfers.forEach(t => {
+            t.Render();
+        });
+        this._selection.Render();
+        if (this._planetSprite != null) this._planetSprite.Draw();      
     }
 }
 

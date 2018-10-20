@@ -17,12 +17,21 @@ class Buffer{
     public quantities : number[] = [0,0,0];
 }
 
+class SpriteData {
+    public Src : string = "";
+    public WindowPosition : Vector = new Vector(0, 0);
+    public WindowSize : Vector = new Vector(0, 0);
+    public Tics : number = 0;
+    public Speed : number = 1;
+}
+
 class Planet{
     public name: string;
     public reasourceDensity: number;
     public carryingCapacity: number;
     public occupyingForce = 10;
 
+    public spriteData: SpriteData           = new SpriteData()
     public position: Vector                 = new Vector(0, 0);
     public focus: Focus                     = Focus.Unfocused;
     public inputs: Array<Link>              = [];
@@ -40,3 +49,4 @@ class Planet{
 }
 export{Buffer};
 export{Planet};
+export{SpriteData}
