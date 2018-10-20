@@ -17,4 +17,4 @@
       document.body.appendChild(pre);
     }
   }
-}({"message":"typescript/server/server.ts(4,21): Error TS2307: Cannot find module 'express'.","line":4,"column":21,"name":"TypeScript error","fileName":"typescript/server/server.ts"})
+}({"message":"typescript/client/phone/main.ts(3,18): Error TS2554: Expected 3 arguments, but got 1.","line":3,"column":18,"name":"TypeScript error","fileName":"typescript/client/phone/main.ts"})
