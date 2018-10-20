@@ -24,24 +24,33 @@ class PlanetServ extends Planet{
 
     public UpdateOutputs(dt : number){
         for(let output of this.outputs){
-            let outQuantitySet = (output.rate*dt);
-            let outQuantityMax : number;
+            if(this.owner != null){
+                let outQuantitySet = (output.rate*dt);
+                let outQuantityMax : number;
 
-            if(outQuantitySet > this.buffers.quantities[output.type]){
-                outQuantityMax = 0;
-            }else{
-                outQuantityMax = outQuantitySet;
+                if(outQuantitySet > this.buffers.quantities[output.type]){
+                    outQuantityMax = 0;
+                }else{
+                    outQuantityMax = outQuantitySet;
+                }
+
+                let amountUsed = outQuantityMax - (<PlanetServ>output.to).Receive(outQuantityMax, output.type, output.from);
+
+                output.from.buffers.quantities[output.type] -= amountUsed;
+                
+                //Checks for stripped planet
+                if(this.buffers.quantities[ResourceType.Millitary] < this.occupyingForce){
+                    this.partialForceOwner = this.owner;
+                    this.owner = null;
+                }
             }
-
-            let amountUsed = outQuantityMax - (<PlanetServ>output.to).Receive(outQuantityMax, output.type, output.from);
-
-            output.from.buffers.quantities[output.type] -= amountUsed;
         }
     }
 
     public Receive(amount : number, type : ResourceType, from: Planet) : number{
+
         if(type == ResourceType.Millitary){
-            this.ReceiveMillitary(amount, type, from);
+            return this.ReceiveMillitary(amount, type, from);
         }
 
         let total = this.buffers.quantities[type] + amount;
@@ -54,41 +63,44 @@ class PlanetServ extends Planet{
             this.buffers.quantities[type] = total;
             overage = 0;
         }
-        return 0;
+        return total - overage;
     }
 
     ReceiveMillitary(amount : number, type : ResourceType.Millitary, from: Planet) : number{
 
         if(from.owner == this.owner || this.partialForceOwner == from.owner){
-            //Adding to partial force
+            //Adding to a force
             let total = amount + this.buffers.quantities[ResourceType.Millitary];
+            let overage: number;
 
             if(total > Buffer.BUFFER_MAX){
                 this.buffers.quantities[ResourceType.Millitary] = Buffer.BUFFER_MAX;
-                return total - Buffer.BUFFER_MAX;
+                overage = total - Buffer.BUFFER_MAX;
             }else{
-                this.buffers.quantities[ResourceType.Millitary] += amount; 
-                return 0;
+                this.buffers.quantities[ResourceType.Millitary] = total; 
+                overage = 0;
             }
 
-            //check for stripped planet
-            if(from.buffers.quantities[ResourceType.Millitary] < from.occupyingForce){
-                from.owner = null;
-                from.partialForceOwner = from.owner;
+            //planet has been taken over
+            if(!this.owner && this.buffers.quantities[ResourceType.Millitary] > this.occupyingForce){
+                this.owner = this.partialForceOwner;
+                this.partialForceOwner = null;
             }
+            return overage;
         }else{
+
             //Actual attack
             let remainingMillitary = this.buffers.quantities[ResourceType.Millitary] - amount;
 
-            if(remainingMillitary < 0){
+            if(remainingMillitary < 0){//Enemies gone from planet
                 let winningMillitary = Math.abs(remainingMillitary)
 
-                if(winningMillitary > this.occupyingForce){
+                if(winningMillitary > this.occupyingForce){//Taken over
                     this.owner = from.owner;
                     this.partialForceOwner = null;
-                }else{
-                    this.owner = null;
+                }else{//added partial force, but not owned yet
                     this.partialForceOwner = from.owner;
+                    this.owner = null;
                 }
                 
                 if(winningMillitary > Buffer.BUFFER_MAX){
@@ -99,16 +111,15 @@ class PlanetServ extends Planet{
                     return 0;
                 }
                 
-            }else{
-                let survivingMillitary = remainingMillitary;
+            }else{//Attack but surives
+                this.buffers.quantities[ResourceType.Millitary] = remainingMillitary;
 
-                if(survivingMillitary > Buffer.BUFFER_MAX){
-                    this.buffers.quantities[ResourceType.Millitary] = Buffer.BUFFER_MAX;
-                    return survivingMillitary - Buffer.BUFFER_MAX;
-                }else{
-                    this.buffers.quantities[ResourceType.Millitary] = survivingMillitary;
-                    return 0;
+                if(remainingMillitary < this.occupyingForce){
+                    this.partialForceOwner = this.owner;
+                    this.owner = null;
                 }
+
+                return 0;
             }
         }
     }
