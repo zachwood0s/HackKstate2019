@@ -7,6 +7,10 @@ class Canvas {
 
     constructor() {
         this.canvas = <HTMLCanvasElement>document.getElementById('mainScreen');
+        this.canvas.style.width = window.innerWidth + "px";
+        this.canvas.style.height = window.innerHeight + "px";
+        this.canvas.style.overflow = "hidden"
+        this.canvas.style.margin = "0"
         this.canvas.width = this.Width;
         this.canvas.height = this.Height;
         this.Ctx = this.canvas.getContext("2d");

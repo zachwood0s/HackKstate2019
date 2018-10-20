@@ -5,25 +5,24 @@ class TransferDraw {
     private readonly FOCUS_COLORS : Array<string> = ["red", "green", "yellow"];
 
     private _ctx : CanvasRenderingContext2D;
-    private _startPosition : Vector;
-    private _endPosition : Vector;
-    private _ownerSpace : number;
+    private _startPosition : Vector = new Vector(0,0);
+    private _endPosition : Vector = new Vector(0,0)
+
     private _resource : number;
     private _vec : Vector;
 
-    constructor (ctx : CanvasRenderingContext2D, startPos : Vector, endPos : Vector, ownerSpace : number, resource : ResourceType) {
+    constructor (ctx : CanvasRenderingContext2D, startPos : Vector, endPos : Vector, rad : number, resource : ResourceType) {
         this._ctx = ctx;
-        this._startPosition = startPos;
-        this._endPosition = endPos;
-        this._ownerSpace = ownerSpace;
         this._resource = resource;
 
-        let difX = this._endPosition.x - this._startPosition.y;
-        let difY = this._endPosition.y - this._startPosition.y
+        let difX = endPos.x - startPos.x;
+        let difY = endPos.y - startPos.y
         let mag = Math.sqrt(difX * difX + difY * difY);
-        this._vec = new Vector(difX / mag ,difY / mag)
-        this._startPosition.x -= this._vec.x * ownerSpace;
-        this._startPosition.y -= this._vec.y * ownerSpace;
+        this._vec = new Vector(difX / mag ,difY / mag);
+        this._startPosition.x = startPos.x + (this._vec.x * rad);
+        this._startPosition.y = startPos.y + (this._vec.y * rad);
+        this._endPosition.x = endPos.x - (this._vec.x * rad);
+        this._endPosition.y = endPos.y - (this._vec.y * rad);
     }
 
     public Render() : void {
