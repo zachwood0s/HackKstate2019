@@ -1,12 +1,13 @@
 import {ResourceType} from "./globals";
+import {Planet} from "./planet";
 
 class Link{
-    public from: string;
-    public to: string;
+    public from: Planet;
+    public to: Planet;
     public rate: number;
     public type: ResourceType;
 
-    constructor(fromIn: string, toIn: string, rateIn: number, typeIn: ResourceType){
+    constructor(fromIn: Planet, toIn: Planet, rateIn: number, typeIn: ResourceType){
         this.from   = fromIn;
         this.to     = toIn;
         this.rate   = rateIn;
