@@ -45,9 +45,28 @@ class PlanetServ extends Planet{
                         netLost = outQuantityMax - overage;
                         
                     }else{
-                        //Subtracting from partial force
-                        output.to.buffers.quantities
-              
+                        //Partial force has lost
+                        let newMil = output.to.buffers.quantities[ResourceType.Millitary] - outQuantityMax;
+
+                        if(newMil < 0){
+                            newMil = Math.abs(newMil);
+                            output.to.buffers.quantities[ResourceType.Millitary] = newMil;
+
+                            if(newMil > output.to.occupyingForce){
+                                output.to.owner = output.from.owner;
+                                output.to.partialForceOwner = null;
+
+                            }else{
+                                output.to.owner = null;
+                                output.to.partialForceOwner = output.from.owner;
+                            }
+
+                        }else{
+                            //Partial force is surviving
+                            if(newMil < output.to.occupyingForce){
+                                output.to.owner = null;
+                            }
+                        }
                     }
                 }else{
                     //Attacking an owned planet
