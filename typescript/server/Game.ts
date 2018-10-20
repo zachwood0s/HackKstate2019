@@ -46,6 +46,7 @@ export class Game{
     private nextId: number = 0;
     private pairedScreen?: SocketIO.Socket;
     private updateInterval: any;
+    private broadcastInterval: any;
     private io: SocketIO.Server;
 
     public constructor(planetCount : number, io: SocketIO.Server){
@@ -102,7 +103,7 @@ export class Game{
 
 
     public update(){
-        this.io.sockets.emit(Events.SERVER_TICK, this.planets);
+       
         for(let planet of this.planets){
             planet.Update();
         }
@@ -113,9 +114,14 @@ export class Game{
             this.planets.push(new PlanetServ(planetNames[i], Math.random() * 100, Math.random() * 100));
         }
     }
+    public broadcastInfo(){
+        this.io.sockets.emit(Events.SERVER_TICK, this.planets);
+    }
     public StartGame(){
         this.GenPlanets();
-        this.updateInterval = setInterval(this.update.bind(this), 1000);
+        this.planets.push(new PlanetServ("earth", 0, 0), new PlanetServ("mars", 0, 0)) 
+        this.updateInterval = setInterval(this.update.bind(this), 100);
+        this.updateInterval = setInterval(this.update.bind(this), 100);
     }
 
     public EndGame(){
@@ -129,7 +135,7 @@ class Test{
         let testPlanet2 = new PlanetServ("TestPlanetName2", 1, 1);
         let testPlanet = PlanetServ.DownCast(testPlanet3);
 
-        testPlanet.Receive(10, ResourceType.Labor);
+        //testPlanet.Receive(10, ResourceType.Labor);
         testPlanet.outputs.push(new Link(testPlanet, testPlanet2, 1, ResourceType.Labor, 1));
         testPlanet.UpdateOutputs(1);
 
@@ -143,16 +149,29 @@ class Test{
         let testPlanet2 = new PlanetServ("TestPlanetName2", 1, 1);
         testPlanet2.owner = new Player(2);
 
-        testPlanet.buffers.quantities[ResourceType.Millitary] = 8;
+        testPlanet.buffers.quantities[ResourceType.Millitary] = 15;
         testPlanet2.buffers.quantities[ResourceType.Millitary] = 50;
 
-        testPlanet.outputs.push(new Link(testPlanet, testPlanet2, 1, ResourceType.Millitary, 1));
-        testPlanet.UpdateOutputs(1);
-
+        testPlanet.outputs.push(new Link(testPlanet, testPlanet2, 5, ResourceType.Millitary, 1));
+  
+        for(var i = 0; i < 10; i++ ){
+            testPlanet.UpdateOutputs(1);
+        }
+        
         console.log(testPlanet.buffers.quantities[ResourceType.Millitary]);
+        console.log("P1 part ", testPlanet.owner);
+        console.log("P1 part ", testPlanet.partialForceOwner);
+        if(testPlanet.partialForceOwner){
+            console.log(testPlanet.partialForceOwner.ID);
+        }
+        
         console.log(testPlanet2.buffers.quantities[ResourceType.Millitary]);
-        console.log(testPlanet2.owner.ID);
-        //console.log(testPlanet2.partialForceOwner.ID!);
+        console.log("P2 part ", testPlanet2.owner);
+        console.log("P2 part ", testPlanet2.partialForceOwner);
+        if(testPlanet2.partialForceOwner){
+            console.log(testPlanet2.partialForceOwner.ID);
+        }
+        
     }
 
 }
