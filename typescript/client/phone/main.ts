@@ -19,6 +19,7 @@ window.onload = () =>{
     socket.emit(Events.PLAYER_JOINED);
 
     socket.on(Events.PLAYER_ID, (player: Player) => {
+        console.log("Player ID recieved!", player);
         setupGame(player);
     });
 }
@@ -26,15 +27,17 @@ window.onload = () =>{
 function setupGame(player: Player){
     let updater = new UIUpdater(socket, player);
 
-    let testPlanet = new Planet("Earth", 70, 40);
-    updater.UpdatePlanets([testPlanet, new Planet("Mars", 60, 20), new Planet("Your Anus", 100, 100)]);
-
     let clickClearfix = document.getElementById("clickClearfix");
     if(clickClearfix){
         clickClearfix.onclick = () => {
             updater.CloseSelectedPlanetsList();
         }
     }
+
+    socket.on(Events.SERVER_TICK, function(planets: Planet[]){
+        updater.UpdatePlanets(planets);
+        console.log("recieved server tick", planets);
+    });
 }
 
 

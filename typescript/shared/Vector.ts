@@ -1,4 +1,4 @@
-class Vector {
+export class Vector {
     public x : number;
     public y : number
 
@@ -7,5 +7,3 @@ class Vector {
         this.y = y
     }
 }
-
-export { Vector }

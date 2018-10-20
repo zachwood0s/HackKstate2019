@@ -1,4 +1,4 @@
-class Player{
+export class Player{
     public ID : number;
 
     constructor(id : number){
@@ -6,5 +6,3 @@ class Player{
     }
 
 }
-
-export{Player};

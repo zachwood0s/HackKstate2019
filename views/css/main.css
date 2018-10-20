@@ -65,6 +65,7 @@ hr{
     top:0;
     box-shadow:0 0 10px #222;
     z-index: 1;
+    overflow: auto;
 }
 
 #planetList .sectionHeader{
@@ -82,14 +83,14 @@ hr{
     margin-top:0px;
 }
 
-#planetList .planet{
+#planetList .planet, #insOutsList .planet{
     --height: 50px;
     height:var(--height);
     position:relative;
     padding:10px;
 }
 
-#planetList .planet .planetIcon{
+#planetList .planet .planetIcon, #insOutsList .planet .planetIcon{
     width:var(--height);
     height:var(--height);
     float:left;
@@ -97,7 +98,7 @@ hr{
     background:var(--color-white);
 }
 
-#planetList .planet .planetName{
+#planetList .planet .planetName, #insOutsList .planet .planetName{
     float:left;
     font-weight:bold;
     font-size: 20px;
@@ -299,5 +300,11 @@ hr{
     background:var(--color-dark);
 }
 
+#insOutsList .planet .setButton{
+    position: relative;
+    width: var(--height);
+    height: var(--height);
+    float:right;
+}
 
 

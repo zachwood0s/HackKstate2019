@@ -1,7 +1,7 @@
 import {ResourceType} from "./globals";
 import {Planet} from "./Planet";
 
-class Link{
+export class Link{
     public readonly from: Planet;
     public readonly to: Planet;
     public readonly rate: number;
@@ -17,5 +17,3 @@ class Link{
     }
 
 }
-
-export{Link};
