@@ -1,9 +1,16 @@
 
 <html>
     <head>
-        <script src="../javascript/client/desktop/bundle.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="javascript/client/desktop/bundle.js"></script>
     </head>
     <body>
 
     </body>
+    <script>
+        var socket = new io();
+        socket.on('connect', function(data) {
+            socket.emit('pairScreen');
+        });
+    </script>
 </html>
