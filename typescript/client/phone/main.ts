@@ -1,6 +1,7 @@
 import {Events} from '../../shared/events';
-import { Planet } from '../../shared/planet';
+import { Planet } from '../../shared/Planet';
 import * as MenuClicks from './menuOnclicks';
+import {UIUpdater} from './UiUpdater';
 
 let socket = io();
 
@@ -19,6 +20,13 @@ socket.on(Events.OWNED_PLANET, (planet: Planet) => {
 });
 
 window.onload = () =>{
-    MenuClicks.setupClicks();
+    let updater = new UIUpdater();
+
+    updater.SetupOnClicks();
+}
+
+
+function setupTestPlanets(){
+
 }
 
