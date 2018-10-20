@@ -22,6 +22,21 @@ window.onload = () =>{
         console.log("Player ID recieved!", player);
         setupGame(player);
     });
+
+    document.onclick = function (argument) {
+        launchIntoFullscreen(document.documentElement);
+    }
+} 
+function launchIntoFullscreen(element: any) {
+    if(element.requestFullscreen) {
+      element.requestFullscreen();
+    } else if(element.mozRequestFullScreen) {
+      element.mozRequestFullScreen();
+    } else if(element.webkitRequestFullscreen) {
+      element.webkitRequestFullscreen();
+    } else if(element.msRequestFullscreen) {
+      element.msRequestFullscreen();
+    }
 }
 
 function setupGame(player: Player){

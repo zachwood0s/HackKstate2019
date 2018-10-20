@@ -58,6 +58,7 @@ export class Game{
         this.playerCount++;
         this.nextId++;
         this.planets[this.playerCount].owner = newPlayer;
+        this.planets[this.playerCount].buffers.quantities[ResourceType.Millitary] = 30;
         console.log("Number of players:", this.playerCount);
         return newPlayer;
     }
@@ -119,13 +120,13 @@ export class Game{
     }
     public StartGame(){
         this.GenPlanets();
-        this.planets.push(new PlanetServ("earth", 0, 0), new PlanetServ("mars", 0, 0)) 
         this.updateInterval = setInterval(this.update.bind(this), 100);
-        this.updateInterval = setInterval(this.update.bind(this), 100);
+        this.broadcastInterval = setInterval(this.broadcastInfo.bind(this), 1000);
     }
 
     public EndGame(){
         clearInterval(this.updateInterval);
+        clearInterval(this.broadcastInterval);
     }
 }
 
