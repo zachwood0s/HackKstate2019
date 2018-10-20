@@ -46,7 +46,7 @@ class Test{
         console.log(testPlanet.buffers.quantities[ResourceType.Millitary]);
         console.log(testPlanet2.buffers.quantities[ResourceType.Millitary]);
         console.log(testPlanet2.owner.ID);
-        console.log(testPlanet2.partialForceOwner.ID!);
+        //console.log(testPlanet2.partialForceOwner.ID!);
     }
 
 }
