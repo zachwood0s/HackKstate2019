@@ -1,4 +1,4 @@
-import { Planet } from "../../shared/planet";
+//import { Planet } from "../../shared/Planet";
 
-let testPlanet = new Planet("Earth-Phone-test");
-console.log(testPlanet.name);
+//let testPlanet = new Planet("Earth-Phone-test");
+//console.log(testPlanet.name);
