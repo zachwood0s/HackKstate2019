@@ -28,9 +28,9 @@ class HoverDraw {
         this._playerHoverCount++;
     }
 
-    public RemovePlayer(playerNumber : number) {
-        this._playersHovered.slice(playerNumber)
-        this._playerHoverCount--;
+    public RemoveAll() {
+        this._playersHovered = [];
+        this._playerHoverCount = 0;
     }
 
     public SetOwner(playerNumber : number) {

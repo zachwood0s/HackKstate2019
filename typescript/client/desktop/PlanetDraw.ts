@@ -26,11 +26,11 @@ class PlanetDraw {
     }
 
     public AddHover(playerNum : number) : void {
-        this._selection.AddPlayer(playerNum)
+        this._selection.AddPlayer(playerNum);
     }
 
-    public RemoveHover(playerNum : number) : void {
-        this._selection.RemovePlayer(playerNum)
+    public RemoveHovers() : void {
+        this._selection.RemoveAll();
     }
 
     public SetOwner(playerNum : number) : void {

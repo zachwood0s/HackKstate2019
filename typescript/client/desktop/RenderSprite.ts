@@ -57,22 +57,24 @@ class RenderSprite {
                                 this._windowPosition.y, this._windowSize.x, this._windowSize.y, this.Position.x, 
                                 this.Position.y, this._size.x, this._size.y)
         }
-
-        /*// Move animation
-        if(Math.abs(this._position.x - this._endPosition.x) > this._velocity.x && 
-            Math.abs(this._position.y - this._endPosition.y) > this._velocity.y ){
-            this._position.x += this._velocity.x;
-            this._position.y += this._velocity.y;
-        }*/
     }
+}
 
-    /*public MoveObject(endPosition : Vector, speed : number = 1) : void {
-        let difX : number = endPosition.x - this._position.x;
-        let difY : number = endPosition.y - this._position.y;
-        let mag : number = Math.sqrt(difX*difX + difY*difY);
-        this._velocity = new Vector((difX / mag)*speed, (difY / mag)*speed)
-        this._endPosition = endPosition;  
-    }*/
+class SpriteData {
+    public Src : string;
+    public WindowPosition : Vector;
+    public WindowSize : Vector;
+    public Tics : number;
+    public Speed : number;
+
+    constructor(src : string, pos : Vector, size : Vector, tics : number, speed : number) {
+        this.WindowPosition = pos;
+        this.WindowSize = size;
+        this.Tics = tics;
+        this.Src = src;
+        this.Speed = speed;
+    }
 }
 
 export { RenderSprite }
+export { SpriteData }
