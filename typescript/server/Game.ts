@@ -4,6 +4,40 @@ import { ResourceType } from '../shared/globals';
 import {Planet} from '../shared/Planet';
 import { Player } from '../shared/Player';
 import { Events } from '../shared/events';
+
+const planetNames = [
+    "Thacaicury",
+    "Inoyama",
+    "Suchion",
+    "Bugonoe",
+    "Getera",
+    "Kieturn",
+    "Seboria",
+    "Chibunope",
+    "Norix NU",
+    "Driri 4NC",
+    "Acouter",
+    "Dandialia",
+    "Panziuq",
+    "Ulladus",
+    "Kovis",
+    "Nutera",
+    "Tradibos",
+    "Doteruta",
+    "Pharvis 0P",
+    "Buna 9D8",
+    "Gochicury",
+    "Dolliulia",
+    "Ebov",
+    "Chavarvis",
+    "Niostea",
+    "Huatis",
+    "Llocheturn",
+    "Troitania",
+    "Trosie 758",
+    "Croth 4R7"
+]
+
 export class Game{
     planets : Array<PlanetServ> = new Array<PlanetServ>();
     players: Array<Player> = [];
@@ -22,6 +56,7 @@ export class Game{
         let newPlayer = new Player(this.nextId);
         this.playerCount++;
         this.nextId++;
+        this.planets[this.playerCount].owner = newPlayer;
         console.log("Number of players:", this.playerCount);
         return newPlayer;
     }
@@ -73,8 +108,13 @@ export class Game{
         }
     }
 
+    private GenPlanets(){
+        for(let i = 0; i < 10; i++){
+            this.planets.push(new PlanetServ(planetNames[i], Math.random() * 100, Math.random() * 100));
+        }
+    }
     public StartGame(){
-        this.planets.push(new PlanetServ("earth", 0, 0), new PlanetServ("mars", 0, 0)) 
+        this.GenPlanets();
         this.updateInterval = setInterval(this.update.bind(this), 1000);
     }
 

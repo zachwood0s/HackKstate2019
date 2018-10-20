@@ -2,6 +2,7 @@ import * as socketIo from 'socket.io';
 import {Events} from '../shared/events';
 import { Game } from './Game';
 import { Player } from '../shared/Player';
+import { Link } from '../shared/Link';
 
 const sockets = (io: socketIo.Server, game: Game) =>{
     console.log("sockets started");
@@ -31,8 +32,8 @@ const sockets = (io: socketIo.Server, game: Game) =>{
             }
         })
 
-        socket.on(Events.LINK_CREATED, function(){
-            console.log("A link has been created");
+        socket.on(Events.LINK_CREATED, function(link: Link){
+            console.log("A link has been created", link.from, link.to, link.id, link.type);
         })
 
         socket.on('disconnect', function(){

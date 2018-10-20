@@ -2,6 +2,8 @@ import { Planet } from "../../shared/Planet";
 import {Buffer} from "../../shared/Planet";
 import { Events } from "../../shared/events";
 import { Player } from "../../shared/Player";
+import { Link } from "../../shared/Link";
+import { ResourceType } from "../../shared/globals";
 export class UIUpdater{
     private _uiElements = {
         InsOutsList: document.getElementById("insOutsList"),
@@ -12,11 +14,15 @@ export class UIUpdater{
     private _planets: Planet[];
     private _socket: SocketIOClient.Socket;
     private _player: Player;
+    private _planetListDivs: HTMLElement[];
+    private _selectedPlanet: Planet | null;
 
     constructor(socket: SocketIOClient.Socket, player: Player){
         this._planets = [];
         this._socket = socket;
         this._player = player;
+        this._planetListDivs = [];
+        this._selectedPlanet = null;
     }
 
     private _ToggleInOutList(planet: Planet, input: boolean){
@@ -40,6 +46,7 @@ export class UIUpdater{
         let leftPosition = window.getComputedStyle(document.body).getPropertyValue('--selected-planet-bar-width');
         if(this._uiElements.InsOutsList){
             this._uiElements.InsOutsList.style.left = leftPosition;
+            this._CreateInsOutsList(planet, input);
         }
     }
 
@@ -53,7 +60,16 @@ export class UIUpdater{
     public UpdatePlanets(planets: Planet[]){
         this._planets = planets;
 
-        this._CreatePlanetList();
+        if(this._planetListDivs.length == 0){
+            this._CreatePlanetList();
+        }
+        else{
+            for(let i = 0; i<planets.length; i++){
+                (<any>this._planetListDivs[i]).planet = planets[i];
+            }
+            //Check if selected is displayed and if so update its info
+            //Check if owned planets has changed and if so move the divs around
+        }
     }
 
     private _CreatePlanetList(){
@@ -91,11 +107,40 @@ export class UIUpdater{
             else{
                 unOwnedPlanets.appendChild(planetDiv);
             }
+            this._planetListDivs.push(planetDiv);
 
             let UIUpdater = this;
             planetDiv.onclick = function(){
                 UIUpdater.OpenSelectedPlanetsList((<any>this).planet);
             }
+        }
+    }
+
+    private _CreateInsOutsList(selPlanet: Planet, importing: boolean){
+        if(!this._selectedPlanet) return;
+        if(!this._uiElements.InsOutsList) return;
+        this._uiElements.InsOutsList.innerHTML = "";
+
+        for(let planet of this._planets){
+            if(planet.name == this._selectedPlanet.name) continue;
+
+            let planetDiv = this._CreateDiv(undefined, "planet");
+            let planetIcon = this._CreateDiv(undefined, "planetIcon"); 
+            let planetName = this._CreateDiv(undefined, "planetName", "colorWhite");
+            planetName.innerHTML = planet.name;
+            let setButton = this._CreateDiv(undefined, "setButton", "dark");
+            setButton.onclick = () => {
+                let link: Link;
+                if(importing) link = new Link(planet, selPlanet, 10, ResourceType.Labor, 0);
+                else link = new Link(selPlanet, planet, 10, ResourceType.Labor, 0);
+                this._socket.emit(Events.LINK_CREATED, link);
+            }
+
+            planetDiv.appendChild(planetIcon);
+            planetDiv.appendChild(planetName);
+            planetDiv.appendChild(setButton);
+
+            this._uiElements.InsOutsList.appendChild(planetDiv);
         }
     }
 
@@ -106,6 +151,7 @@ export class UIUpdater{
             this._uiElements.SelectedPlanet.innerHTML = "";
             this._CreateSelectedPlanetHTML(this._uiElements.SelectedPlanet, planet).innerHTML;
             this._uiElements.SelectedPlanet.style.left = "0px";
+            this._selectedPlanet = planet;
             console.log(document.getElementById("outputButton"));
         }
 
@@ -115,7 +161,9 @@ export class UIUpdater{
 
     public CloseSelectedPlanetsList(){
         if(this._uiElements.SelectedPlanet){
+            this._selectedPlanet = null;
             this._uiElements.SelectedPlanet.style.left = "-400px";
+            this._CloseInOutList();
         }
     }
 
