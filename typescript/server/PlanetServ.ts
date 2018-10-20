@@ -5,8 +5,21 @@ import {ResourceType} from "../shared/globals";
 class PlanetServ extends Planet{
 
     public Update(){
-
+     this.UpdateOutputs(1);   
     }
+
+    public static DownCast(planet : Planet) : PlanetServ{
+        let planetServ = new PlanetServ(planet.name, planet.carryingCapacity, planet.reasourceDensity);
+        planetServ.focus = planet.focus;
+        planetServ.inputs = planet.inputs;
+        planetServ.outputs = planet.outputs;
+        planetServ.owner = planet.owner;
+        planetServ.hovered = planet.hovered;
+        planetServ.buffers = planet.buffers;
+        return planetServ;
+    }
+
+ 
 
     public UpdateOutputs(dt : number){
         for(let output of this.outputs){
