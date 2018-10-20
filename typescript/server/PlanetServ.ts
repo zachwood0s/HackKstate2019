@@ -33,10 +33,6 @@ class PlanetServ extends Planet{
             return 0;
         }
 
-<<<<<<< HEAD
-        return 0;
-=======
->>>>>>> 37d17ca2904b1a898e74d6d74ba41e3b53b1f7dc
     }
 
     public CalculateConflict(){
