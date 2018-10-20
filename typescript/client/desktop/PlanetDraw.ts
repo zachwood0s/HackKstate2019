@@ -1,13 +1,13 @@
 import { Vector } from "../../shared/Vector";
-import { RenderSprite, SpriteData } from "./RenderSprite";
+import { RenderSprite } from "./RenderSprite";
 import { HoverDraw } from "./HoverDraw";
 import { TransferDraw } from "./TransferDraw";
 import { ResourceType } from "../../shared/globals";
 import { Planet } from "../../shared/Planet";
 
 class PlanetDraw {
+    public name : string;
     private _ctx : CanvasRenderingContext2D;
-    private _planet : Planet;
     private _position : Vector;
     private _size : number;
 
@@ -15,11 +15,11 @@ class PlanetDraw {
     private _selection : HoverDraw;
     private _transfers : Array<TransferDraw> = [];
 
-    constructor (ctx : CanvasRenderingContext2D, position : Vector, size : number, planet : Planet){
+    constructor (ctx : CanvasRenderingContext2D, position : Vector, size : number, name : string) {
         this._ctx  = ctx;
         this._position = position;
         this._size = size;
-        this._planet = planet;
+        this.name = name;
 
         this._planetSprite = null;
         this._selection = new HoverDraw(ctx, position, size)
@@ -49,22 +49,6 @@ class PlanetDraw {
 
     public RemoveTransfers(){
         this._transfers = [];
-    }
-
-    public SetPlanet(sprite : SpriteData) : void  {
-        this.CreateSpriteAnimation(sprite.Src, sprite.WindowPosition, sprite.WindowSize, sprite.Tics, sprite.Speed);
-    
-        this.RemoveHovers();
-        this._planet.hovered.forEach(player => {
-            this.AddHover(player.ID + 1);
-        });
-    
-        if (this._planet.owner != null) this.SetOwner(this._planet.owner.ID + 1);
-    
-        this.RemoveTransfers();
-        this._planet.outputs.forEach(out => {
-            this.AddTransfer(out.to.position, out.type)
-        });
     }
 
     public Render() : void {

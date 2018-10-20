@@ -60,21 +60,4 @@ class RenderSprite {
     }
 }
 
-class SpriteData {
-    public Src : string;
-    public WindowPosition : Vector;
-    public WindowSize : Vector;
-    public Tics : number;
-    public Speed : number;
-
-    constructor(src : string, pos : Vector, size : Vector, tics : number, speed : number) {
-        this.WindowPosition = pos;
-        this.WindowSize = size;
-        this.Tics = tics;
-        this.Src = src;
-        this.Speed = speed;
-    }
-}
-
 export { RenderSprite }
-export { SpriteData }
