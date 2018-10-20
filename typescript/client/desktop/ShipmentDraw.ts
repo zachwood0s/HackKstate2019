@@ -1,5 +1,0 @@
-class ShipmentDraw {
-
-}
-
-export {ShipmentDraw}
