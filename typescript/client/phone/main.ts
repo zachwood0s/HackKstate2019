@@ -1,5 +1,5 @@
 import {Events} from '../../shared/events';
-import { Planet } from '../../shared/planet';
+import { Planet } from '../../shared/Planet';
 import * as MenuClicks from './menuOnclicks';
 
 let socket = io();

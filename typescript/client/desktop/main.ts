@@ -1,25 +1,32 @@
 import { Canvas } from "./Canvas";
-import { Render } from "./Render";
 import { Vector } from "../../shared/Vector";
+import { PlanetDraw } from "./PlanetDraw";
+import {Planet} from "../../shared/Planet";
 
-window.onload = () =>{
+window.onload = () => {
     let canvas = new Canvas();
     if(canvas.Ctx == null) return;
 
-    let planetRender = new Render(canvas.Ctx, "./Content/planetTest.png", new Vector(100, 100), new Vector(100, 100))
-    let staticPlanet = new Render(canvas.Ctx, "./Content/singlePlanetTest.png", new Vector(300, 300), new Vector(100, 100))
-    planetRender.SetAnimationFrame(new Vector(0,0), new Vector(100, 100), 50, 42)
-    staticPlanet.MoveObject(new Vector(200, 200))
+    let firstPlanet = new Planet("test", 100, 100)
+    //SetPlanet(firstPlanet);
+
+    let testPlanet = new PlanetDraw(canvas.Ctx, new Vector(100, 100), 100);
+    testPlanet.CreateSpriteAnimation("./Content/planetTest.png", new Vector(0,0), new Vector(100, 100), 50, 10);
+    testPlanet.AddHover(1);
 
     let render = () => {
         canvas.Clear();
 
-        staticPlanet.MoveObject(new Vector(1000, 500), 1)
-        
-        staticPlanet.Draw()
-        planetRender.Draw()
+        testPlanet.Render();
 
         window.requestAnimationFrame(render);
     }
     render();
 }
+
+
+/*function SetPlanet(planet : Planet, ctx : CanvasRenderingContext2D) : PlanetDraw  {
+    let drawPlanet = new PlanetDraw(ctx, )
+}*/
+
+
