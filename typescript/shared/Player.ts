@@ -1,7 +1,8 @@
 class Player{
+    public ID : number;
 
-    constructor(){
-            
+    constructor(id : number){
+        this.ID = id;
     }
 
 }
