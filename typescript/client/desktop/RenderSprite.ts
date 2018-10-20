@@ -4,8 +4,7 @@ class RenderSprite {
     // Position
     private _ctx : CanvasRenderingContext2D;
     public Position : Vector;
-    private _size : Vector;
-    //private _velocity : Vector = new Vector(0, 0);
+    private _size : Vector;;
 
     // Animation
     private _spriteSheet : CanvasImageSource = new Image();
@@ -15,7 +14,6 @@ class RenderSprite {
     private _speed : number = 1;
     private _frame : number = 0;
     private _isSprite : boolean = true;
-    private _endPosition : Vector = new Vector(0, 0);
     private _startTime : number = 0;
 
     constructor(ctx : CanvasRenderingContext2D, position : Vector, size : Vector = new Vector(0,0), 
@@ -56,8 +54,8 @@ class RenderSprite {
                 if(this._frame >= this._windowTicks) this._frame = 0;
             }
             this._ctx.drawImage(this._spriteSheet, this._windowPosition.x + (this._frame * this._windowSize.x), 
-                                this._windowPosition.y, this._windowSize.x, this._windowSize.y, this._position.x, this._position.y,
-                                this._size.x, this._size.y)
+                                this._windowPosition.y, this._windowSize.x, this._windowSize.y, this.Position.x, 
+                                this.Position.y, this._size.x, this._size.y)
         }
 
         /*// Move animation

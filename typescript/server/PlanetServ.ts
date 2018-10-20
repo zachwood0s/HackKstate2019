@@ -1,5 +1,5 @@
-import {Planet} from "../shared/planet";
-import {Buffer} from "../shared/planet";
+import {Planet} from "../shared/Planet";
+import {Buffer} from "../shared/Planet";
 import {ResourceType} from "../shared/globals";
 
 class PlanetServ extends Planet{
@@ -79,7 +79,7 @@ class PlanetServ extends Planet{
         }
         
 
-        return false;
+        return 0;
     }
     public CalculateConflict(){
 
