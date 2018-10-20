@@ -33,10 +33,6 @@ class Planet{
         this.carryingCapacity = carryingCapacityIn;
         this.reasourceDensity = reasourceDensityIn;
     }
-
-    public toString(): string{
-        return this.name+";";
-    }
 }
 export{Buffer};
 export{Planet};

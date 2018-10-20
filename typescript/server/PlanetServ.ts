@@ -7,7 +7,8 @@ class PlanetServ extends Planet{
     public Update(){
 
     }
-    public UpdateReasources(dt : number){
+
+    public UpdateOutputs(dt : number){
         for(let output of this.outputs){
             let outQuantity = (output.rate*dt);
             if(outQuantity > this.buffers.quantities[output.type]){
@@ -43,3 +44,5 @@ class PlanetServ extends Planet{
     }
 
 }
+
+export{PlanetServ};
