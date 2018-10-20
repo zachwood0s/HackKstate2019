@@ -13,9 +13,7 @@ enum Focus {
 
 class Buffer{
     public static readonly BUFFER_MAX : number = 100;
-    public laborQuantity: [ResourceType.Labor, number]          = [ResourceType.Labor, 0];
-    public materialsQuantity: [ResourceType.Material, number]   = [ResourceType.Material, 0];
-    public millitaryQuantity: [ResourceType.Millitary, number]  = [ResourceType.Millitary, 0];
+    public quantities : number[] = [0,0,0];
 }
 
 class Planet{
@@ -34,10 +32,6 @@ class Planet{
         this.name = nameIn;
         this.carryingCapacity = carryingCapacityIn;
         this.reasourceDensity = reasourceDensityIn;
-    }
-
-    public toString(): string{
-        return this.name+";";
     }
 }
 export{Buffer};
