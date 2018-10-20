@@ -20,7 +20,7 @@ window.onload = () => {
     planets = GeneratePlanets(10, canvas.Width, canvas.Height, 30)
     planets[2].hovered = [new Player(2), new Player(1)]
     planets[5].owner = new Player(2)
-    planets[1].outputs = [new Link(planets[1], planets[5], 30, ResourceType.Labor)]
+  //  planets[1].outputs = [new Link(planets[1], planets[5], 30, ResourceType.Labor)]
     for(let i = 0; i < planets.length; i++) {
         planets[i].spriteData.Src = "./Content/planetTest.png"
         planets[i].spriteData.WindowPosition = new Vector(0,0);

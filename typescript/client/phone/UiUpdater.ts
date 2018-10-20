@@ -109,6 +109,7 @@ export class UIUpdater{
             console.log(document.getElementById("outputButton"));
         }
 
+        console.log("Sendeng selected planet:",planet.name);
         this._socket.emit(Events.SELECTED_PLANET, planet.name);
     }
 
