@@ -21,6 +21,7 @@ class Planet{
     public name: string;
     public reasourceDensity: number;
     public carryingCapacity: number;
+    public occupyingForce = 10;
 
     public position: Vector         = new Vector(0, 0);
     public focus: Focus             = Focus.Unfocused;
