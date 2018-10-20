@@ -4,7 +4,7 @@ class RenderSprite {
     // Position
     private _ctx : CanvasRenderingContext2D;
     public Position : Vector;
-    private _size : Vector;;
+    private _size : Vector;
 
     // Animation
     private _spriteSheet : CanvasImageSource = new Image();
@@ -56,7 +56,6 @@ class RenderSprite {
             this._ctx.drawImage(this._spriteSheet, this._windowPosition.x + (this._frame * this._windowSize.x), 
                                 this._windowPosition.y, this._windowSize.x, this._windowSize.y, this.Position.x, 
                                 this.Position.y, this._size.x, this._size.y)
-            console.log("Planet")
         }
     }
 }

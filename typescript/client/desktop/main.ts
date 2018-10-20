@@ -26,15 +26,15 @@ window.onload = () => {
     for (let planet of planets) {
         let drawPlanet = AddPlanet(planet);
         if(drawPlanet != null){
-            SetPlanet(drawPlanet, planet, SPRITE_DATA[0]);
             drawPlanets.push(drawPlanet);
         }
     }
 
     let render = () => {
         canvas.Clear();
-
+        
         drawPlanets.forEach(dplanet => {
+            dplanet.SetPlanet(SPRITE_DATA[0])
             dplanet.Render()
         });
 
@@ -72,10 +72,10 @@ function GeneratePlanets(amount: number, screenWidth : number, screenHeight : nu
 
 function AddPlanet(planet : Planet) : PlanetDraw | null {
     if(canvas.Ctx == null) return null;
-    return new PlanetDraw(canvas.Ctx, planet.position, (canvas.Width / planetCount) * PLANET_SIZE)
+    return new PlanetDraw(canvas.Ctx, planet.position, (canvas.Width / planetCount) * PLANET_SIZE, planet)
 }
 
-function SetPlanet(drawPlanet: PlanetDraw, planet : Planet, sprite : SpriteData) : void  {
+/*function SetPlanet(drawPlanet: PlanetDraw, planet : Planet, sprite : SpriteData) : void  {
     drawPlanet.CreateSpriteAnimation(sprite.Src, sprite.WindowPosition, sprite.WindowSize, sprite.Tics, sprite.Speed);
 
     drawPlanet.RemoveHovers();
@@ -84,6 +84,11 @@ function SetPlanet(drawPlanet: PlanetDraw, planet : Planet, sprite : SpriteData)
     });
 
     if (planet.owner != null) drawPlanet.SetOwner(planet.owner.ID + 1);
-}
+
+    drawPlanet.RemoveTransfers();
+    planet.outputs.forEach(out => {
+        drawPlanet.AddTransfer(out.to.position, out.type)
+    });
+}*/
 
 

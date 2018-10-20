@@ -2,7 +2,7 @@ import { Vector } from "../../shared/Vector";
 
 class HoverDraw {
     private readonly COLORS : Array<string> = ["red", "yellow", "blue", "green"];
-    private readonly OWNERSPACE : number = 20;
+    public readonly OWNERSPACE : number = 20;
     private readonly HOVERSPACE : number = 10;
     private readonly HOVERALFA : number = .5;
 
@@ -52,7 +52,6 @@ class HoverDraw {
                 this._ctx.fill();
                 i++
             });  
-            console.log("Hover")
         }
         if(this._owner >= 1) {
             this._ctx.beginPath();
