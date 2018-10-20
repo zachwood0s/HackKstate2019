@@ -2,8 +2,8 @@ import { Vector } from "../../shared/Vector";
 
 class HoverDraw {
     private readonly COLORS : Array<string> = ["red", "yellow", "blue", "green"];
-    public readonly OWNERSPACE : number = 20;
-    private readonly HOVERSPACE : number = 10;
+    public readonly OWNERSPACE : number = 5;
+    private readonly HOVERSPACE : number = 3;
     private readonly HOVERALFA : number = .5;
 
     private _ctx : CanvasRenderingContext2D;

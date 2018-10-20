@@ -4,6 +4,7 @@ import { HoverDraw } from "./HoverDraw";
 import { TransferDraw } from "./TransferDraw";
 import { ResourceType } from "../../shared/globals";
 import { Planet } from "../../shared/Planet";
+import { version } from "punycode";
 
 class PlanetDraw {
     public name : string;
@@ -44,7 +45,10 @@ class PlanetDraw {
     }
 
     public AddTransfer(endpos : Vector, restype : ResourceType) {
-        this._transfers.push(new TransferDraw(this._ctx, this._position, endpos, this._selection.OWNERSPACE, restype))
+        let pos = new Vector(this._position.x + (this._size / 2), this._position.y + (this._size / 2));
+        let end = new Vector(endpos.x + this._size / 2, endpos.y + this._size / 2);
+        let rad = this._selection.OWNERSPACE + (this._size / 2)
+        this._transfers.push(new TransferDraw(this._ctx, pos, end, rad, restype))
     }
 
     public RemoveTransfers(){
