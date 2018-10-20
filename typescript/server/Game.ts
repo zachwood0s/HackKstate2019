@@ -2,7 +2,7 @@ import {PlanetServ} from './PlanetServ';
 import { Link } from '../shared/Link';
 import { ResourceType } from '../shared/globals';
 import {Planet} from '../shared/Planet';
-import { Player } from '../shared/player';
+import { Player } from '../shared/Player';
 class Game{
     planets : Array<PlanetServ> = new Array<PlanetServ>();
 
