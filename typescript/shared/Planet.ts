@@ -1,6 +1,7 @@
 import {Player} from "./Player";
 import {ResourceType} from "./globals";
 import {Link} from "./Link";
+import { Vector } from "./Vector";
 
 enum Focus {
     Unfocused,
@@ -20,13 +21,16 @@ class Planet{
     public name: string;
     public reasourceDensity: number;
     public carryingCapacity: number;
+    public occupyingForce = 10;
 
-    public focus: Focus             = Focus.Unfocused;
-    public inputs: Array<Link>      = [];
-    public outputs: Array<Link>     = [];
-    public owner: Player | null     = null;
-    public hovered: boolean         = false;
-    public buffers: Buffer           = new Buffer();
+    public position: Vector                 = new Vector(0, 0);
+    public focus: Focus                     = Focus.Unfocused;
+    public inputs: Array<Link>              = [];
+    public outputs: Array<Link>             = [];
+    public owner: Player | null             = null;
+    public hovered: Array<Player>           = [];
+    public buffers: Buffer                  = new Buffer();
+    public partialForceOwner: Player | null = null;
 
     constructor(nameIn: string, carryingCapacityIn: number, reasourceDensityIn: number){
         this.name = nameIn;

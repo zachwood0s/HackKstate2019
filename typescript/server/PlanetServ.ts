@@ -1,23 +1,84 @@
 import {Planet} from "../shared/Planet";
 import {Buffer} from "../shared/Planet";
 import {ResourceType} from "../shared/globals";
+import {Player} from "../shared/Player";
 
 class PlanetServ extends Planet{
 
     public Update(){
-
+     this.UpdateOutputs(1);   
+     this.UpdateOwner();
+    }
+    
+    public static DownCast(planet : Planet) : PlanetServ{
+        let planetServ = new PlanetServ(planet.name, planet.carryingCapacity, planet.reasourceDensity);
+        planetServ.focus = planet.focus;
+        planetServ.inputs = planet.inputs;
+        planetServ.outputs = planet.outputs;
+        planetServ.owner = planet.owner;
+        planetServ.hovered = planet.hovered;
+        planetServ.buffers = planet.buffers;
+        return planetServ;
     }
 
     public UpdateOutputs(dt : number){
         for(let output of this.outputs){
-            let outQuantity = (output.rate*dt);
-            if(outQuantity > this.buffers.quantities[output.type]){
-                (<PlanetServ>output.to).Receive(this.buffers.quantities[output.type], output.type);
-                this.buffers.quantities[output.type] = 0;
+            let outQuantitySet = (output.rate*dt);
+            let outQuantityMax : number;
+
+            if(outQuantitySet > this.buffers.quantities[output.type]){
+                outQuantityMax = 0;
             }else{
-                (<PlanetServ>output.to).Receive(outQuantity, output.type);
-                this.buffers.quantities[output.type] -= outQuantity;
+                outQuantityMax = outQuantitySet;
             }
+            let netLost = 0;
+
+            if(output.type == ResourceType.Millitary && output.from.owner != output.to.owner){
+                
+                if(!output.to.owner){
+                    //Attacking an unowned planet
+                    if(output.to.partialForceOwner == output.from.owner){
+                        //Adding to partial force
+                        let overage = (<PlanetServ>output.to).Receive(
+                            outQuantityMax, 
+                            ResourceType.Millitary);
+                        netLost = outQuantityMax - overage;
+                        
+                    }else{
+                        //Partial force has lost
+                        let newMil = output.to.buffers.quantities[ResourceType.Millitary] - outQuantityMax;
+
+                        if(newMil < 0){
+                            newMil = Math.abs(newMil);
+                            output.to.buffers.quantities[ResourceType.Millitary] = newMil;
+
+                            if(newMil > output.to.occupyingForce){
+                                output.to.owner = output.from.owner;
+                                output.to.partialForceOwner = null;
+
+                            }else{
+                                output.to.owner = null;
+                                output.to.partialForceOwner = output.from.owner;
+                            }
+
+                        }else{
+                            //Partial force is surviving
+                            if(newMil < output.to.occupyingForce){
+                                output.to.owner = null;
+                            }
+                        }
+                    }
+                }else{
+                    //Attacking an owned planet
+
+                }
+                output.to.buffers.quantities[output.type] -= netLost;
+            }else{
+                //Adding reasource types if not an attack
+                (<PlanetServ>output.to).Receive(this.buffers.quantities[output.type], output.type);
+            }
+
+            
         }
     }
 
@@ -35,11 +96,17 @@ class PlanetServ extends Planet{
 
     }
 
-    public CalculateConflict(){
+    public Attack(target: Player){
 
     }
 
-    public Attack(){
+    public UpdateOwner(attacker?: Player){
+
+        if(this.buffers.quantities[ResourceType.Millitary] < this.occupyingForce){
+            this.owner = null;
+        }else if(attacker){
+            this.owner = attacker;
+        }
 
     }
 
