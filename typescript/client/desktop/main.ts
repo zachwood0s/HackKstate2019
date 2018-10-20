@@ -21,7 +21,7 @@ window.onload = () => {
     planets[2].hovered = [new Player(2), new Player(1)]
     planets[5].owner = new Player(2)
     planets[1].owner = new Player(1)
-    planets[1].outputs = [new Link(planets[1], planets[5], 30, ResourceType.Labor)]
+    planets[1].outputs = [new Link(planets[1], planets[5], 30, ResourceType.Labor, 1)]
     for(let i = 0; i < planets.length; i++) {
         planets[i].spriteData.Src = "./Content/planetTest.png"
         planets[i].spriteData.WindowPosition = new Vector(0,0);
