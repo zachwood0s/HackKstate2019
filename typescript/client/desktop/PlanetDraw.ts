@@ -33,6 +33,10 @@ class PlanetDraw {
         this._selection.RemovePlayer(playerNum)
     }
 
+    public SetOwner(playerNum : number) : void {
+        this._selection.SetOwner(playerNum);
+    }
+
     public Render() : void {
         if (this._planetSprite != null) this._planetSprite.Draw()
     }
