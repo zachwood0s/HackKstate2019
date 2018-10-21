@@ -80,7 +80,7 @@ export class Game{
     public SelectPlanet(name: string, player: Player){
         for(let planet of this.planets){
             if(planet.name == name){
-                if(!this.arrayHas(planet.hovered, (elm: Player) => player.ID == elm.ID)){
+                if(!this.ArrayHas(planet.hovered, (elm: Player) => player.ID == elm.ID)){
                     planet.hovered.push(player)
                     console.log("Added player to hovered:", player.ID);
                 }
@@ -92,7 +92,15 @@ export class Game{
         }
     }
 
-    public arrayHas<T>(array: T[], callback: (a1: T)=>boolean){
+    public ArrayFind<T>(array: T[], callback: (a1: T)=>boolean) : T | null{
+        for(let elm of array){
+            if(callback(elm)){
+                return elm;
+            }
+        }
+        return null;
+    }
+    public ArrayHas<T>(array: T[], callback: (a1: T)=>boolean){
         for(let elm of array){
             if(callback(elm)){
                 return true;

@@ -36,7 +36,14 @@ const sockets = (io: socketIo.Server, game: Game) =>{
 
         socket.on(Events.LINK_CREATED, function(link: Link){
             console.log("A link has been created", link.from, link.to, link.id, link.type);
+
         })
+        //-----
+        socket.on(Events.LINK_DELETED, function(){
+            console.log('Screen has been paired!');
+            game.PairScreen(socket);
+        })
+
 
         socket.on('disconnect', function(){
             console.log('user disconnected');
