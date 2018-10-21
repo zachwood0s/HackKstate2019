@@ -1,4 +1,5 @@
 import { Vector } from "../../shared/Vector";
+import { ResourceType } from "../../shared/globals";
 
 class HoverDraw {
     public static readonly COLORS : Array<string> = ["#F44336", "#2196F3", "#4CAF50", "#FFC107"];
@@ -13,6 +14,7 @@ class HoverDraw {
     private _playerHoverCount : number
     private _playersHovered : Array<number>;
     private _owner : number;
+    private _resource : ResourceType = 0;
 
     constructor(ctx : CanvasRenderingContext2D, position : Vector, diameter : number) {
         this._ctx = ctx;
@@ -36,6 +38,10 @@ class HoverDraw {
 
     public SetOwner(playerNumber : number) {
         this._owner = playerNumber;
+    }
+
+    public SetResourceProduced(r : ResourceType){
+        this._resource
     }
 
     public Render() : void {
