@@ -1,10 +1,10 @@
 import { Vector } from "../../shared/Vector";
 
 class HoverDraw {
-    private readonly COLORS : Array<string> = ["red", "yellow", "blue", "green"];
-    public readonly OWNERSPACE : number = 5;
-    private readonly HOVERSPACE : number = 3;
-    private readonly HOVERALFA : number = .5;
+    private readonly COLORS : Array<string> = ["#F44336", "#2196F3", "#4CAF50", "#FFC107"];
+    public readonly OWNERSPACE : number = 10;
+    private readonly HOVERSPACE : number = 10;
+    private readonly HOVERALFA : number = .8;
 
     private _ctx : CanvasRenderingContext2D;
     private _position : Vector;
@@ -56,6 +56,7 @@ class HoverDraw {
         }
         if(this._owner >= 1) {
             this._ctx.beginPath();
+            this._ctx.lineWidth = 4;
             this._ctx.arc(this._position.x, this._position.y, this._radiusOwner, 0, Math.PI*2);
             this._ctx.strokeStyle = this.COLORS[this._owner - 1]
             this._ctx.stroke();

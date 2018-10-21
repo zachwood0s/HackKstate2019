@@ -21,7 +21,6 @@ socket.on("connect", ()=>{
 })
 
 socket.on(Events.SERVER_TICK, (planets: Planet[])=>{
-    console.log(planets)
     ReceiveData(planets);
 });
 
