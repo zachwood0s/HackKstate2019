@@ -1,7 +1,7 @@
 import { Vector } from "../../shared/Vector";
 
 class HoverDraw {
-    private readonly COLORS : Array<string> = ["#F44336", "#2196F3", "#4CAF50", "#FFC107"];
+    public static readonly COLORS : Array<string> = ["#F44336", "#2196F3", "#4CAF50", "#FFC107"];
     public readonly OWNERSPACE : number = 10;
     private readonly HOVERSPACE : number = 10;
     private readonly HOVERALFA : number = .8;
@@ -48,7 +48,7 @@ class HoverDraw {
                 this._ctx.beginPath();
                 this._ctx.arc(this._position.x, this._position.y, this._radiusHover, startAngle, endAngle);
                 this._ctx.globalAlpha = this.HOVERALFA;
-                this._ctx.fillStyle = this.COLORS[playerNum - 1]
+                this._ctx.fillStyle = HoverDraw.COLORS[playerNum - 1]
                 this._ctx.fill();
                 this._ctx.globalAlpha = 1;
                 i++
@@ -58,7 +58,7 @@ class HoverDraw {
             this._ctx.beginPath();
             this._ctx.lineWidth = 4;
             this._ctx.arc(this._position.x, this._position.y, this._radiusOwner, 0, Math.PI*2);
-            this._ctx.strokeStyle = this.COLORS[this._owner - 1]
+            this._ctx.strokeStyle = HoverDraw.COLORS[this._owner - 1]
             this._ctx.stroke();
         }
     }

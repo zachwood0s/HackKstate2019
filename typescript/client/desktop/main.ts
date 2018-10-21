@@ -7,13 +7,15 @@ import { Link } from "../../shared/Link";
 import { ResourceType } from "../../shared/globals";
 import { link } from "fs";
 import { Events } from "../../shared/events";
+import { GeneratePlanets } from "../../server/GeneratePlanets";
 
 let canvas : Canvas;
 let planetCount : number;
 let planets : Array<Planet> = [];
 let drawPlanets : Array<PlanetDraw> = [];
 
-let socket = io()
+// Save for real
+/*let socket = io()
 socket.on("connect", ()=>{
     console.log("Connected to server!");
 
@@ -22,32 +24,32 @@ socket.on("connect", ()=>{
 
 socket.on(Events.SERVER_TICK, (planets: Planet[])=>{
     ReceiveData(planets);
-});
+});*/
 
 window.onload = () => {
     canvas = new Canvas();
     let background = new Image();
-    background.src = "/views/Content/Backgrounds/01.png"
+    background.src = "./Content/Backgrounds/00.png"
 
     // Temp
-    /*planets = GeneratePlanets(32, canvas.Width, canvas.Height, 37)
+    planets = GeneratePlanets(32, canvas.Width, canvas.Height)
     planets[2].hovered = [new Player(2), new Player(1)]
     planets[5].owner = new Player(2)
     planets[1].owner = new Player(1)
     let link = new Link(planets[1], planets[5], 3, ResourceType.Labor, 1);
-    planets[1].outputs = [link]*/
+    planets[1].outputs = [link]
 
     let render = () => {
         canvas.Clear();
 
-        //ReceiveData(planets);
+        // Temp
+        ReceiveData(planets);
         //RemoveLink(link);
 
         if(canvas.Ctx == null) return;
         canvas.Ctx.restore()
         canvas.Ctx.drawImage(background, 0, 0, canvas.Width, canvas.Width * (background.height / background.width))
 
-        console.log(drawPlanets)
         drawPlanets.forEach(dplanet => {
             dplanet.Render()
         });
@@ -83,7 +85,6 @@ function RemoveLink(link : Link) {
                 for(let j = 0; j < drawPlanets.length; j++) {
                     if(drawPlanets[j].name == planet.name) {
                         drawPlanets[j].RemoveTransfer(link.id);
-                        console.log("remove")
                         break;
                     }
                 }               
@@ -106,9 +107,10 @@ function SetPlanet(drawPlanet: PlanetDraw, planet : Planet) : void  {
         drawPlanet.AddHover(player.id + 1);
     });
 
-    if (planet.owner != null) drawPlanet.SetOwner(planet.owner.id + 1);
+    if (planet.owner != null) drawPlanet.SetOwner(planet.owner.id);
 
     planet.outputs.forEach(out => {
-        drawPlanet.AddTransfer(out.to.position, out.type, out.rate, out.id)
+        if (planet.owner != null)
+            drawPlanet.AddTransfer(out.to.position, out.type, out.rate, out.id, planet.owner.id)
     });
 }

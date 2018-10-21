@@ -6,39 +6,6 @@ import { Player } from '../shared/Player';
 import { Events } from '../shared/events';
 import { GeneratePlanets } from './GeneratePlanets';
 
-const planetNames = [
-    "Thacaicury",
-    "Inoyama",
-    "Suchion",
-    "Bugonoe",
-    "Getera",
-    "Kieturn",
-    "Seboria",
-    "Chibunope",
-    "Norix NU",
-    "Driri 4NC",
-    "Acouter",
-    "Dandialia",
-    "Panziuq",
-    "Ulladus",
-    "Kovis",
-    "Nutera",
-    "Tradibos",
-    "Doteruta",
-    "Pharvis 0P",
-    "Buna 9D8",
-    "Gochicury",
-    "Dolliulia",
-    "Ebov",
-    "Chavarvis",
-    "Niostea",
-    "Huatis",
-    "Llocheturn",
-    "Troitania",
-    "Trosie 758",
-    "Croth 4R7"
-]
-
 export class Game{
     planets : Array<PlanetServ> = new Array<PlanetServ>();
     players: Array<Player> = [];
