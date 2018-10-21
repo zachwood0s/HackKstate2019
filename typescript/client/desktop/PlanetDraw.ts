@@ -27,9 +27,9 @@ class PlanetDraw {
     }
 
     public CreateSpriteAnimation(spriteSheet : string, windowPosition : Vector, windowSize : Vector, 
-                                 tics : number, speed : number = 1) : void {
+                                 tics : number, speed : number = 1, rotation : number = 0) : void {
         this._planetSprite = new RenderSprite(this._ctx, this._position, new Vector(this._size, this._size), spriteSheet);
-        this._planetSprite.SetAnimationFrame(windowPosition, windowSize, tics, speed)
+        this._planetSprite.SetAnimationFrame(windowPosition, windowSize, tics, speed, rotation)
     }
 
     public AddHover(playerNum : number) : void {

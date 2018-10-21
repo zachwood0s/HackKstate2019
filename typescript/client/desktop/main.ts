@@ -97,7 +97,7 @@ function AddPlanet(planet : Planet) : PlanetDraw | null {
     if(canvas.Ctx == null) return null;
     let drawPlanet = new PlanetDraw(canvas.Ctx, planet.position, planet.size, planet.name)
     drawPlanet.CreateSpriteAnimation(planet.spriteData.Src, planet.spriteData.WindowPosition, planet.spriteData.WindowSize,
-        planet.spriteData.Tics, planet.spriteData.Speed);
+        planet.spriteData.Tics, planet.spriteData.Speed, planet.spriteData.Rotation);
     return drawPlanet;
 }
 
