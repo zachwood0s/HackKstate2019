@@ -103,10 +103,10 @@ function AddPlanet(planet : Planet) : PlanetDraw | null {
 function SetPlanet(drawPlanet: PlanetDraw, planet : Planet) : void  {
     drawPlanet.RemoveHovers();
     planet.hovered.forEach(player => {
-        drawPlanet.AddHover(player.ID + 1);
+        drawPlanet.AddHover(player.id + 1);
     });
 
-    if (planet.owner != null) drawPlanet.SetOwner(planet.owner.ID + 1);
+    if (planet.owner != null) drawPlanet.SetOwner(planet.owner.id + 1);
 
     planet.outputs.forEach(out => {
         drawPlanet.AddTransfer(out.to.position, out.type, out.rate, out.id)

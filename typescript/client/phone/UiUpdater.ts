@@ -101,7 +101,7 @@ export class UIUpdater{
             planetDiv.appendChild(planetIcon);
             planetDiv.appendChild(planetName);
 
-            if(planet.owner && planet.owner.ID == this._player.ID){
+            if(planet.owner && planet.owner.id == this._player.id){
                 ownedPlanets.appendChild(planetDiv);
             }
             else{
@@ -123,7 +123,7 @@ export class UIUpdater{
 
         for(let planet of this._planets){
             if(planet.name == this._selectedPlanet.name) continue;
-            if(importing && (!planet.owner || planet.owner.ID != this._player.ID)) continue;
+            if(importing && (!planet.owner || planet.owner.id != this._player.id)) continue;
 
             let planetDiv = this._CreateDiv(undefined, "planet");
             let planetIcon = this._CreateDiv(undefined, "planetIcon"); 
@@ -239,7 +239,7 @@ export class UIUpdater{
         inputButton.onclick = this._ToggleInOutList(planet, true);
         inputOutputButtons.appendChild(inputButton);
 
-        if(planet.owner && planet.owner.ID == this._player.ID){
+        if(planet.owner && planet.owner.id == this._player.id){
             let outputButton = this._CreateDiv("outputButton", "button", "white", "colorDark");
             outputButton.innerHTML = "Outputs";
             outputButton.onclick = this._ToggleInOutList(planet, false);

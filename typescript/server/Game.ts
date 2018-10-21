@@ -43,12 +43,15 @@ export class Game{
     planets : Array<PlanetServ> = new Array<PlanetServ>();
     players: Array<Player> = [];
 
+
     private playerCount: number = 0;
     private nextId: number = 0;
     private pairedScreen?: SocketIO.Socket;
     private updateInterval: any;
     private broadcastInterval: any;
     private io: SocketIO.Server;
+    private avalibleIds : Array<number> = [0, 1, 2, 3, 4];
+    private nextLinkId = 0;
 
     public constructor(planetCount : number, io: SocketIO.Server){
         this.io = io;
@@ -67,7 +70,7 @@ export class Game{
     public RemovePlayer(player: Player){
         var i = this.players.length;
         while (i--) {
-            if (this.players[i].ID == player.ID) {
+            if (this.players[i].id == player.id) {
                 this.players.splice(i, 1);
             }
         }
@@ -81,9 +84,9 @@ export class Game{
     public SelectPlanet(name: string, player: Player){
         for(let planet of this.planets){
             if(planet.name == name){
-                if(!this.ArrayHas(planet.hovered, (elm: Player) => player.ID == elm.ID)){
+                if(!this.ArrayHas(planet.hovered, (elm: Player) => player.id == elm.id)){
                     planet.hovered.push(player)
-                    console.log("Added player to hovered:", player.ID);
+                    console.log("Added player to hovered:", player.id);
                 }
                 else{
                     console.log("Player already had planet selected");
@@ -91,9 +94,9 @@ export class Game{
             }
             else{
                 for(let i = planet.hovered.length - 1; i >= 0; i--){
-                    if(planet.hovered[i].ID == player.ID){
+                    if(planet.hovered[i].id == player.id){
                         planet.hovered.splice(i,1);
-                        console.log("Player removed from hoverd:", player.ID);
+                        console.log("Player removed from hoverd:", player.id);
                     }
                 }
             }
@@ -104,6 +107,14 @@ export class Game{
         for(let elm of array){
             if(callback(elm)){
                 return elm;
+            }
+        }
+        return null;
+    }
+    public ArrayIndex<T>(array: T[], callback: (a1: T)=>boolean) : number | null{
+        for(let i = 0; i < array.length; i++){
+            if(callback(array[i])){
+                return i;
             }
         }
         return null;
@@ -142,6 +153,51 @@ export class Game{
         clearInterval(this.updateInterval);
         clearInterval(this.broadcastInterval);
     }
+
+    public createLink(link:Link) : Link | null{
+        let toPlanet = this.ArrayFind(this.planets, (elm: Planet) => link.to.name == elm.name);
+        let fromPlanet = this.ArrayFind(this.planets, (elm: Planet) => link.from.name == elm.name);
+
+        if(toPlanet && fromPlanet){
+            let newlink = new Link(fromPlanet, toPlanet, link.rate, link.type, this.nextLinkId);
+            fromPlanet.outputs.push(newlink);
+            toPlanet.inputs.push(newlink);
+            this.nextLinkId++;
+
+            return newlink;
+        }
+        return null;
+    }
+
+    public deleteLink(link:Link){
+        let toPlanet = this.ArrayFind(this.planets, (elm: Planet) => link.to.name == elm.name);
+        let fromPlanet = this.ArrayFind(this.planets, (elm: Planet) => link.from.name == elm.name);
+        if(toPlanet && fromPlanet){
+            let indexFrom = this.ArrayIndex(fromPlanet.outputs, (elm: Link) => link.id == elm.id)
+            if(indexFrom) fromPlanet.outputs.slice(indexFrom, 1);
+            let indexTo = this.ArrayIndex(toPlanet.inputs, (elm: Link) => link.id == elm.id)
+            if(indexTo) fromPlanet.outputs.slice(indexTo, 1);
+        }
+    }
+
+    public createPlayer() : Player | null{
+        let id = this.avalibleIds.pop();
+        if(id){
+            let newPlayer = new Player(id);
+            return newPlayer;
+        }
+        return null;
+    }
+
+    
+    public setFocus(planet: Planet, focus: Focus){
+        let realPlanet = this.ArrayFind(this.planets, (elm: Planet) => planet.name == elm.name);
+        if(realPlanet && realPlanet.owner){
+            realPlanet.focus = focus;
+        }
+    }
+
+
     //////////////////////////////////////////
 
 }
@@ -179,14 +235,14 @@ class Test{
         console.log("P1 part ", testPlanet.owner);
         console.log("P1 part ", testPlanet.partialForceOwner);
         if(testPlanet.partialForceOwner){
-            console.log(testPlanet.partialForceOwner.ID);
+            console.log(testPlanet.partialForceOwner.id);
         }
         
         console.log(testPlanet2.buffers.quantities[ResourceType.Millitary]);
         console.log("P2 part ", testPlanet2.owner);
         console.log("P2 part ", testPlanet2.partialForceOwner);
         if(testPlanet2.partialForceOwner){
-            console.log(testPlanet2.partialForceOwner.ID);
+            console.log(testPlanet2.partialForceOwner.id);
         }
         
     }
