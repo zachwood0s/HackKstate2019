@@ -41,7 +41,7 @@ class HoverDraw {
     }
 
     public SetResourceProduced(r : ResourceType){
-        this._resource
+        this._resource = r;
     }
 
     public Render() : void {
@@ -74,6 +74,12 @@ class HoverDraw {
             this._ctx.strokeStyle = "#424242"
             this._ctx.stroke();
         }
+        let text = ""
+        if(this._resource == ResourceType.Labor) text = "Labor";
+        if(this._resource == ResourceType.Material) text = "Material";
+        if(this._resource == ResourceType.Millitary) text = "Military";
+        console.log(this._resource)
+        this._ctx.fillText(text, this._position.x, this._position.y + this._radiusHover + 10)
     }
 }
 

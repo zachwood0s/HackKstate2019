@@ -119,8 +119,9 @@ function SetPlanet(drawPlanet: PlanetDraw, planet : Planet) : void  {
     if (planet.owner != null) drawPlanet.SetOwner(planet.owner.id + 1);
     else drawPlanet.SetOwner(-1);
 
+    drawPlanet.SetFocuc(<number> planet.focus);
+
     planet.outputs.forEach(out => {
-        console.log("adding", planet);
         if (planet.owner != null)
             drawPlanet.AddTransfer(out.to.position, out.type, out.rate, out.id, planet.owner.id + 1)
     });
