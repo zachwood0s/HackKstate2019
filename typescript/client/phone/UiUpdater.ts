@@ -43,17 +43,15 @@ export class UIUpdater{
 
     private _OpenInOutList(planet: Planet, input: boolean){
         console.log("Opening ins-outs list for planet: ",planet);
-        let leftPosition = window.getComputedStyle(document.body).getPropertyValue('--insouts-slide-out');
         if(this._uiElements.InsOutsList){
-            this._uiElements.InsOutsList.style.left = leftPosition;
+            this._uiElements.InsOutsList.classList.add("open");
             this._CreateInsOutsList(planet, input);
         }
     }
 
     private _CloseInOutList(){
-        let leftPosition = "-400px";
         if(this._uiElements.InsOutsList){
-            this._uiElements.InsOutsList.style.left = leftPosition;
+            this._uiElements.InsOutsList.classList.remove("open");
         }
     }
 
@@ -151,7 +149,7 @@ export class UIUpdater{
         if(this._uiElements.SelectedPlanet && planet){
             this._uiElements.SelectedPlanet.innerHTML = "";
             this._CreateSelectedPlanetHTML(this._uiElements.SelectedPlanet, planet).innerHTML;
-            this._uiElements.SelectedPlanet.style.left = "0px";
+            this._uiElements.SelectedPlanet.classList.add("open");
             this._selectedPlanet = planet;
             console.log(document.getElementById("outputButton"));
         }
@@ -163,7 +161,7 @@ export class UIUpdater{
     public CloseSelectedPlanetsList(){
         if(this._uiElements.SelectedPlanet){
             this._selectedPlanet = null;
-            this._uiElements.SelectedPlanet.style.left = "-400px";
+            this._uiElements.SelectedPlanet.classList.remove("open");
             this._CloseInOutList();
         }
     }

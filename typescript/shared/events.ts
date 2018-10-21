@@ -8,5 +8,6 @@ export enum Events {
         LINK_DELETED = "link_deleted",
         PLAYER_ID = "player_id",
         LINK_ID = "link_id",
+        FOCUS_SET = "focus_set",
 }
 

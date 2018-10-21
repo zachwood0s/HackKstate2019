@@ -127,6 +127,10 @@ hr{
 	transition: 500ms cubic-bezier(.75,-0.5,0,1.75);
 }
 
+#selectedPlanet.open{
+    left:0;
+}
+
 
 /****** Icon area ******/
 
@@ -288,6 +292,10 @@ hr{
     transition: .5s ease-in-out;
     */
 	transition: 500ms cubic-bezier(.75,-0.5,0,1.75);
+}
+
+#insOutsList.open{
+    left:var(--insouts-slide-out);
 }
 
 /* This is used so that theirs no gap when 
