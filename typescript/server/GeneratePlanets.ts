@@ -43,7 +43,7 @@ const planetNames = [
 let rotSpeed = 8;
 let size = 50;
 let rand = 37;
-let planetSize = 3;
+let planetSize = 5;
 function GeneratePlanets(amount: number, screenWidth : number, screenHeight : number) : Array<PlanetServ> {
     let planets : Array<PlanetServ> = []
     for (let i = 0; i < amount; i++) {
