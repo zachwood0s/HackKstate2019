@@ -192,7 +192,7 @@ export class UIUpdater{
             console.log(document.getElementById("outputButton"));
         }
 
-        if(planet.owner && planet.owner.ID == this._player.ID && this._uiElements.SetFocusButton){
+        if(planet.owner && planet.owner.id == this._player.id && this._uiElements.SetFocusButton){
             this._uiElements.SetFocusButton.classList.add("shown");
             this._uiElements.SetFocusButton.onclick = this._ToggleSetFocusList(planet);
         }
@@ -210,6 +210,7 @@ export class UIUpdater{
         if(this._uiElements.SetFocusButton){
             this._uiElements.SetFocusButton.classList.remove("shown");
         }
+        this._CloseSetFocusList();
     }
 
     private _CreateSelectedPlanetHTML(selectedPlanet: HTMLElement, planet: Planet): HTMLElement{

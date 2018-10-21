@@ -3,6 +3,7 @@ import {Events} from '../shared/events';
 import { Game } from './Game';
 import { Player } from '../shared/Player';
 import { Link } from '../shared/Link';
+import { Focus, Planet } from '../shared/Planet';
 
 const sockets = (io: socketIo.Server, game: Game) =>{
     console.log("sockets started");
@@ -33,6 +34,11 @@ const sockets = (io: socketIo.Server, game: Game) =>{
                 game.SelectPlanet(name, player);
             }
         })
+
+        socket.on(Events.FOCUS_SET, function(focus: Focus, planet: Planet){
+            console.log("Set focus for planet:", planet.name, Focus[focus]);
+            game.setFocus(planet, focus);
+        });
 
         socket.on(Events.LINK_CREATED, function(link: Link){
             console.log("A link has been created", link.from, link.to, link.id, link.type);
