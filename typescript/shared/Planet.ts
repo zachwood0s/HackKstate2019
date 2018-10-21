@@ -4,13 +4,12 @@ import {Link} from "./Link";
 import { Vector } from "./Vector";
 
 export enum Focus {
-    Unfocused,
     Labor,
     Material,
     Millitary,
-    Technology
+    Technology,
+    Unfocused
 }
-
 
 export class Buffer{
     public static readonly BUFFER_MAX : number = 100;

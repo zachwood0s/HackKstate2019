@@ -1,7 +1,7 @@
 import {PlanetServ} from './PlanetServ';
 import { Link } from '../shared/Link';
 import { ResourceType } from '../shared/globals';
-import {Planet} from '../shared/Planet';
+import {Planet, Focus} from '../shared/Planet';
 import { Player } from '../shared/Player';
 import { Events } from '../shared/events';
 import { GeneratePlanets } from './GeneratePlanets';
@@ -184,6 +184,35 @@ class Test{
         
     }
 
+    static testProduce(){
+        let testPlanet = new PlanetServ("TestPlanetName", 1, 1);
+        testPlanet.owner = new Player(1);
+
+
+        for(var i = 0; i < 50; i++ ){
+            testPlanet.focus = Focus.Labor;
+            testPlanet.Update();
+        }
+        for(var i = 0; i < 10; i++ ){
+            testPlanet.focus = Focus.Material;
+            testPlanet.Update();
+        }
+        for(var i = 0; i < 1; i++ ){
+            testPlanet.focus = Focus.Millitary;
+            testPlanet.Update();
+        }
+        for(var i = 0; i < 100; i++ ){
+            testPlanet.focus = Focus.Technology;
+            testPlanet.Update();
+        }
+
+        for(var i = 0; i < 3; i++){
+            console.log(testPlanet.buffers.quantities[i]);
+        }
+        console.log(testPlanet.owner.TechnologyLevel);
+
+    }
+
 }
 
-Test.testAttack();
+Test.testProduce();

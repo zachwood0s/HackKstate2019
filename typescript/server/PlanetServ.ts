@@ -1,4 +1,4 @@
-import {Planet} from "../shared/Planet";
+import {Planet, Focus} from "../shared/Planet";
 import {Buffer} from "../shared/Planet";
 import {ResourceType} from "../shared/globals";
 import {Player} from "../shared/Player";
@@ -7,7 +7,8 @@ import {Link} from "../shared/Link";
 class PlanetServ extends Planet{
 
     public Update(){
-     this.UpdateOutputs(1);   
+        this.Produce(1);
+        this.UpdateOutputs(1);   
     }
     
     public static DownCast(planet : Planet) : PlanetServ{
@@ -21,11 +22,34 @@ class PlanetServ extends Planet{
         return planetServ;
     }
     public Produce(dt : number){
-        let focusType : ResourceType;
-       // switch(this.focus){
-       //     case Fou
-       // }
+        if(!this.owner || this.focus == Focus.Unfocused){
+            this.focus = Focus.Unfocused;
+            return;
+        }
+        let selected = this.buffers.quantities;
+
+        if(this.focus == Focus.Labor){
+            selected[this.focus]++;
+        }else if(this.focus == Focus.Material){
+            if(selected[ResourceType.Labor] >= 1){
+                selected[ResourceType.Labor]--;
+                selected[this.focus]++;
+            }
+        }else if(this.focus == Focus.Millitary){
+            if(selected[ResourceType.Labor] >= 1 && selected[ResourceType.Material] >= 1){
+                selected[ResourceType.Labor]--;
+                selected[ResourceType.Material]--;
+                selected[this.focus]++;
+            }
+        }else if(this.focus == Focus.Technology){
+            if(selected[ResourceType.Labor] >= 1 && selected[ResourceType.Material] >= 1){
+                selected[ResourceType.Labor]--;
+                selected[ResourceType.Material]--;
+                this.owner.TechnologyLevel++;
+            }
+        }
     }
+    
     public UpdateOutputs(dt : number){
         for(let output of this.outputs){
             if(this.owner != null){
