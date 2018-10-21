@@ -1,7 +1,7 @@
 import { Vector } from "../../shared/Vector";
 import { ResourceType } from "../../shared/globals"
+import { HoverDraw } from "./HoverDraw";
 
-const FOCUS_COLORS : Array<string> = ["red", "green", "yellow"];
 class TransferDraw {
     private readonly AN_DEN : number = 5;
     private readonly SIZE : number = 5;
@@ -12,17 +12,19 @@ class TransferDraw {
     private _rects : Array<Rectangle> = [];
     private _statTime : number;
     public _ID : number;
+    private _playerNum : number;
 
     public _resource : number;
     public _vec : Vector;
     private _speed : number;
 
     constructor (ctx : CanvasRenderingContext2D, startPos : Vector, endPos : Vector, rad : number, resource : ResourceType,
-         speed : number, id : number) {
+         speed : number, id : number, playernum : number) {
         this._ctx = ctx;
         this._resource = resource;
         this._speed = speed;
         this._ID = id;
+        this._playerNum = playernum;
 
         let difX = endPos.x - startPos.x;
         let difY = endPos.y - startPos.y
@@ -50,14 +52,14 @@ class TransferDraw {
         this._ctx.beginPath();
         this._ctx.moveTo(this._startPosition.x, this._startPosition.y)
         this._ctx.lineTo(this._endPosition.x, this._endPosition.y)
-        this._ctx.strokeStyle = FOCUS_COLORS[this._resource]
+        this._ctx.strokeStyle = HoverDraw.COLORS[this._playerNum - 1]
         this._ctx.stroke();    
 
         let rm = -1;
         for(let i = 0; i < this._rects.length; i++) {
             this._ctx.beginPath();
             this._ctx.arc(this._rects[i].Position.x, this._rects[i].Position.y, this.SIZE, 0, Math.PI*2);
-            this._ctx.fillStyle = FOCUS_COLORS[this._resource]
+            this._ctx.fillStyle = HoverDraw.COLORS[this._playerNum - 1]
             this._ctx.fill();
             let difX = this._endPosition.x - this._rects[i].Position.x;
             let difY = this._endPosition.y - this._rects[i].Position.y;
