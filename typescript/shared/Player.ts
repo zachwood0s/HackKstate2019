@@ -1,9 +1,10 @@
 export class Player{
-    public ID : number;
+    public id : number;
     public TechnologyLevel : number = 0;
+    public playerNumber : number = 0;
 
     constructor(id : number){
-        this.ID = id;
+        this.id = id;
     }
 
 }

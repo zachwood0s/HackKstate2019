@@ -2,6 +2,43 @@ import { Planet } from "../shared/Planet";
 import { Vector } from "../shared/Vector";
 import { PlanetServ } from "./PlanetServ";
 import { Buffer } from "../shared/Planet"
+import { Game } from "./Game";
+
+
+const planetNames = [
+    "Thacaicury",
+    "Inoyama",
+    "Suchion",
+    "Bugonoe",
+    "Getera",
+    "Kieturn",
+    "Seboria",
+    "Chibunope",
+    "Norix NU",
+    "Driri 4NC",
+    "Acouter",
+    "Dandialia",
+    "Panziuq",
+    "Ulladus",
+    "Kovis",
+    "Nutera",
+    "Tradibos",
+    "Doteruta",
+    "Pharvis 0P",
+    "Buna 9D8",
+    "Gochicury",
+    "Dolliulia",
+    "Ebov",
+    "Chavarvis",
+    "Niostea",
+    "Huatis",
+    "Llocheturn",
+    "Troitania",
+    "Trosie 758",
+    "Croth 4R7",
+    "Zeno F84",
+    "X-Crhon"
+]
 
 let rotSpeed = 8;
 let size = 50;
@@ -13,13 +50,14 @@ function GeneratePlanets(amount: number, screenWidth : number, screenHeight : nu
         let resMin = resMax - (resMax / 2)
         let resVal = Math.floor(Math.random() * (resMax - resMin)) + resMin;
         let labVal = Math.floor(Math.random() * (resMax - resMin)) + resMin;
-        let p = new PlanetServ("Planet " + (i+1), labVal, resVal)
+        let p = new PlanetServ(planetNames[i], labVal, resVal)
         planets.push(p)
     }
 
     // Set Animation
     for (let i = 0; i < planets.length; i++){
-        planets[i].spriteData.Src = "./Content/PlanetSprites/01.png"
+        let rad = Math.floor(Math.random() * Math.PI)
+        planets[i].spriteData.Src = "./Content/PlanetSprites/00.png"
         planets[i].spriteData.WindowPosition = new Vector(0,0);
         planets[i].spriteData.WindowSize = new Vector(50, 50);
         planets[i].spriteData.Tics = 200;

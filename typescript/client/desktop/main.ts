@@ -29,7 +29,7 @@ socket.on(Events.SERVER_TICK, (planets: Planet[])=>{
 window.onload = () => {
     canvas = new Canvas();
     let background = new Image();
-    background.src = "./Content/Backgrounds/01.png"
+    background.src = "./Content/Backgrounds/00.png"
 
     // Temp
     planets = GeneratePlanets(32, canvas.Width, canvas.Height)
@@ -50,7 +50,6 @@ window.onload = () => {
         canvas.Ctx.restore()
         canvas.Ctx.drawImage(background, 0, 0, canvas.Width, canvas.Width * (background.height / background.width))
 
-        console.log(drawPlanets)
         drawPlanets.forEach(dplanet => {
             dplanet.Render()
         });
@@ -105,13 +104,13 @@ function AddPlanet(planet : Planet) : PlanetDraw | null {
 function SetPlanet(drawPlanet: PlanetDraw, planet : Planet) : void  {
     drawPlanet.RemoveHovers();
     planet.hovered.forEach(player => {
-        drawPlanet.AddHover(player.ID + 1);
+        drawPlanet.AddHover(player.id + 1);
     });
 
-    if (planet.owner != null) drawPlanet.SetOwner(planet.owner.ID);
+    if (planet.owner != null) drawPlanet.SetOwner(planet.owner.id);
 
     planet.outputs.forEach(out => {
         if (planet.owner != null)
-            drawPlanet.AddTransfer(out.to.position, out.type, out.rate, out.id, planet.owner.ID)
+            drawPlanet.AddTransfer(out.to.position, out.type, out.rate, out.id, planet.owner.id)
     });
 }
