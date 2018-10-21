@@ -22,9 +22,9 @@ class PlanetServ extends Planet{
     }
     public Produce(dt : number){
         let focusType : ResourceType;
-        switch(this.focus){
-            case Fou
-        }
+       // switch(this.focus){
+       //     case Fou
+       // }
     }
     public UpdateOutputs(dt : number){
         for(let output of this.outputs){

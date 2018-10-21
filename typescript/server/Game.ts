@@ -4,6 +4,7 @@ import { ResourceType } from '../shared/globals';
 import {Planet} from '../shared/Planet';
 import { Player } from '../shared/Player';
 import { Events } from '../shared/events';
+import { GeneratePlanets } from './GeneratePlanets';
 
 const planetNames = [
     "Thacaicury",
@@ -119,9 +120,7 @@ export class Game{
     }
 
     private GenPlanets(){
-        for(let i = 0; i < 10; i++){
-            this.planets.push(new PlanetServ(planetNames[i], Math.random() * 100, Math.random() * 100));
-        }
+        this.planets = GeneratePlanets(32, 1600, 775)
     }
     public broadcastInfo(){
         this.io.sockets.emit(Events.SERVER_TICK, this.planets);
