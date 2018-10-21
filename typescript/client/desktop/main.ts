@@ -44,7 +44,7 @@ window.onload = () => {
         canvas.Clear();
 
         // Temp
-        ReceiveData(planets);
+        //ReceiveData(planets);
         //RemoveLink(link);
 
         if(canvas.Ctx == null) return;
