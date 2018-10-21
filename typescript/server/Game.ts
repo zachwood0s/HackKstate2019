@@ -18,7 +18,7 @@ export class Game{
     private updateInterval: any;
     private broadcastInterval: any;
     private io: SocketIO.Server;
-    private avalibleIds : Array<number> = [0, 1, 2, 3];
+    private avalibleIds : Array<number> = [0, 1, 2, 3, 4, 5];
     private nextLinkId = 0;
 
     

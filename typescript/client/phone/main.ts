@@ -21,7 +21,7 @@ window.onload = () =>{
     });
 
     document.onclick = function (argument) {
-       launchIntoFullscreen(document.documentElement);
+    launchIntoFullscreen(document.documentElement);
     }
 } 
 function launchIntoFullscreen(element: any) {

@@ -172,7 +172,7 @@ export class UIUpdater{
             if(importing && (!planet.owner || planet.owner.id != this._player.id)) continue;
 
             let planetDiv = this._CreateDiv(undefined, "planet");
-            let planetIcon = this._CreateDiv(undefined, "planetIcon"); 
+            //let planetIcon = this._CreateDiv(undefined, "planetIcon"); 
             let planetName = this._CreateDiv(undefined, "planetName", "colorWhite");
             planetName.innerHTML = planet.name;
 
@@ -191,7 +191,7 @@ export class UIUpdater{
             }
             */
 
-            planetDiv.appendChild(planetIcon);
+            //planetDiv.appendChild(planetIcon);
             planetDiv.appendChild(planetName);
             planetDiv.appendChild(setMatButton);
             planetDiv.appendChild(setMiltButton);

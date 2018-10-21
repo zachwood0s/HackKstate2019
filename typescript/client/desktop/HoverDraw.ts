@@ -2,7 +2,7 @@ import { Vector } from "../../shared/Vector";
 import { ResourceType } from "../../shared/globals";
 
 class HoverDraw {
-    public static readonly COLORS : Array<string> = ["#F44336", "#2196F3", "#4CAF50", "#FFC107"];
+    public static readonly COLORS : Array<string> = ["#F44336", "#2196F3", "#4CAF50", "#FFC107", "#FF0000", "#00FF00", "#0000FF"];
     public readonly OWNERSPACE : number = 10;
     private readonly HOVERSPACE : number = 10;
     private readonly HOVERALFA : number = .8;
