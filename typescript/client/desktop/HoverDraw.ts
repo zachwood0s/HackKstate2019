@@ -78,8 +78,8 @@ class HoverDraw {
         if(this._resource == ResourceType.Labor) text = "Labor";
         if(this._resource == ResourceType.Material) text = "Material";
         if(this._resource == ResourceType.Millitary) text = "Military";
-        console.log(this._resource)
-        this._ctx.fillText(text, this._position.x, this._position.y + this._radiusHover + 10)
+        this._ctx.fillStyle == "#F5F5F5"
+        this._ctx.fillText(text, this._position.x + 10, this._position.y + this._radiusHover + 20)
     }
 }
 
