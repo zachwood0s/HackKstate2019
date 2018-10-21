@@ -47,11 +47,15 @@ const sockets = (io: socketIo.Server, game: Game) =>{
 
             let newLink = game.createLink(link);
             if(newLink){
+                console.log("link succeeded");
                 //console.log(newLink);
                 //newLink.from.spriteData = new SpriteData();
                 //newLink.to.spriteData = new SpriteData();
                 //let stringed = JSON.stringify(newLink);
                 //socket.emit(Events.LINK_ID, JSON.stringify(newLink));
+            }
+            else{
+                console.log("link failed");
             }
         })
         //-----

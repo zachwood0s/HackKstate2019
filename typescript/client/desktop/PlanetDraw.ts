@@ -51,7 +51,11 @@ class PlanetDraw {
         let add = true;
         let trans = new TransferDraw(this._ctx, pos, end, rad, restype, speed, id, pnum)
         this._transfers.forEach(t => {
+<<<<<<< HEAD
             if (t._resource == restype && t._endPosition == endpos) add = false;
+=======
+            if (t._resource == restype && t.center.equals(end)) add = false;
+>>>>>>> cbde5c4914e6d356c3657b1b25dbb462f44b1504
         });
         if(add) {
             this._transfers.push(trans)

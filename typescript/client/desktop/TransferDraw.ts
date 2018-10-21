@@ -13,6 +13,7 @@ class TransferDraw {
     private _statTime : number;
     public _ID : number;
     private _playerNum : number;
+    public center : Vector;
 
     public _resource : number;
     public _vec : Vector;
@@ -25,6 +26,7 @@ class TransferDraw {
         this._speed = speed;
         this._ID = id;
         this._playerNum = playernum;
+        this.center = endPos;
 
         let difX = endPos.x - startPos.x;
         let difY = endPos.y - startPos.y
@@ -66,12 +68,12 @@ class TransferDraw {
             if(Math.abs(difX) < Math.abs(this._vec.x*this._speed*2) && Math.abs(difY) < Math.abs(this._vec.y*this._speed*2)) {
                 rm = i;
             }
-            this._rects[i].Position.x += this._vec.x * this._speed;
-            this._rects[i].Position.y += this._vec.y * this._speed;
+            this._rects[i].Position.x += this._vec.x * this._speed * .1;
+            this._rects[i].Position.y += this._vec.y * this._speed * .1;
         }
         if(rm != -1) this._rects.splice(rm, 1);
 
-        if(((Date.now() - this._statTime)/1000) > (1/this._speed)) {
+        if(((Date.now() - this._statTime)/1000) > (1/(this._speed*.1))) {
             let rec = new Rectangle();
             rec.Position = new Vector(this._startPosition.x, this._startPosition.y);
             this._rects.push(rec)
