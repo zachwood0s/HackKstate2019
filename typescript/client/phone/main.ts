@@ -3,6 +3,7 @@ import { Planet } from '../../shared/Planet';
 import * as MenuClicks from './menuOnclicks';
 import {UIUpdater} from './UiUpdater';
 import { Player } from '../../shared/Player';
+import {parse} from 'flatted';
 
 let socket = io();
 
@@ -45,8 +46,8 @@ function setupGame(player: Player){
         }
     }
 
-    socket.on(Events.SERVER_TICK, function(planets: Planet[]){
-        updater.UpdatePlanets(planets);
+    socket.on(Events.SERVER_TICK, function(planets: string){
+        updater.UpdatePlanets(parse(planets));
     });
 }
 

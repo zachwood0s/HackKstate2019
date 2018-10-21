@@ -5,6 +5,7 @@ import {Planet, Focus} from '../shared/Planet';
 import { Player } from '../shared/Player';
 import { Events } from '../shared/events';
 import { GeneratePlanets } from './GeneratePlanets';
+import {stringify} from 'flatted';
 
 export class Game{
     planets : Array<PlanetServ> = new Array<PlanetServ>();
@@ -109,7 +110,7 @@ export class Game{
         this.planets = GeneratePlanets(32, 1600, 775)
     }
     public broadcastInfo(){
-        this.io.sockets.emit(Events.SERVER_TICK, this.planets);
+        this.io.sockets.emit(Events.SERVER_TICK, stringify(this.planets));
     }
     public StartGame(){
         this.GenPlanets();
@@ -130,10 +131,8 @@ export class Game{
             let newlink = new Link(fromPlanet, toPlanet, link.rate, link.type, this.nextLinkId);
             fromPlanet.outputs.push(newlink);
             toPlanet.inputs.push(newlink);
-            let nonCircleLink = new Link(new Planet(fromPlanet.name, fromPlanet.carryingCapacity, fromPlanet.reasourceDensity),
-                new Planet(toPlanet.name, toPlanet.carryingCapacity, toPlanet.reasourceDensity), link.rate, link.type, this.nextLinkId);
             this.nextLinkId++;
-            return nonCircleLink;
+            return newlink;
         }
         return null;
     }
@@ -154,6 +153,9 @@ export class Game{
         let id = this.avalibleIds.pop();
         if(id){
             let newPlayer = new Player(id);
+            this.planets[this.playerCount].owner = newPlayer;
+            this.planets[this.playerCount].buffers.quantities[ResourceType.Millitary] = 30;
+            this.playerCount++;
             return newPlayer;
         }
         return null;
@@ -249,5 +251,3 @@ class Test{
     }
 
 }
-
-Test.testProduce();

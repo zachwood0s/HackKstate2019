@@ -3,7 +3,8 @@ import {Events} from '../shared/events';
 import { Game } from './Game';
 import { Player } from '../shared/Player';
 import { Link } from '../shared/Link';
-import { Focus, Planet } from '../shared/Planet';
+import { Focus, Planet, SpriteData } from '../shared/Planet';
+import {parse} from 'flatted';
 
 const sockets = (io: socketIo.Server, game: Game) =>{
     console.log("sockets started");
@@ -21,7 +22,7 @@ const sockets = (io: socketIo.Server, game: Game) =>{
         socket.on(Events.PLAYER_JOINED, function(){
             console.log('A player has joined!');
 
-            let newPlayer = game.AddPlayer();
+            let newPlayer = game.createPlayer();
             player = newPlayer;
             socket.emit(Events.PLAYER_ID, newPlayer);
             //socket.emit(Events.PLAYER_ID, )
@@ -40,14 +41,17 @@ const sockets = (io: socketIo.Server, game: Game) =>{
             game.setFocus(planet, focus);
         });
 
-        socket.on(Events.LINK_CREATED, function(link: Link){
+        socket.on(Events.LINK_CREATED, function(linkText: string){
+            let link = parse(linkText) as Link;
             console.log("A link has been created", link.from.name, "->", link.to.name, link.id, link.type);
 
             let newLink = game.createLink(link);
             if(newLink){
-                console.log(newLink);
-                socket.emit(Events.LINK_ID, newLink);
-                console.log("Sent link", newLink);
+                //console.log(newLink);
+                //newLink.from.spriteData = new SpriteData();
+                //newLink.to.spriteData = new SpriteData();
+                //let stringed = JSON.stringify(newLink);
+                //socket.emit(Events.LINK_ID, JSON.stringify(newLink));
             }
         })
         //-----
