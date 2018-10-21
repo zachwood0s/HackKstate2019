@@ -56,10 +56,9 @@ function GeneratePlanets(amount: number, screenWidth : number, screenHeight : nu
 
     // Set Animation
     for (let i = 0; i < planets.length; i++){
-        let rad = Math.floor(Math.random() * Math.PI)
-        planets[i].spriteData.Src = "./Content/PlanetSprites/00.png"
+        planets[i].spriteData.Src = "/views/Content/PlanetSprites/00.png"
         planets[i].spriteData.WindowPosition = new Vector(0,0);
-        planets[i].spriteData.WindowSize = new Vector(50, 50);
+        planets[i].spriteData.WindowSize = new Vector(75, 75);
         planets[i].spriteData.Tics = 200;
         planets[i].spriteData.Speed = ((Math.random()/3) + 1) * rotSpeed;
     }
@@ -76,7 +75,9 @@ function GeneratePlanets(amount: number, screenWidth : number, screenHeight : nu
             if(Math.random() > .5) rx *= -1;
             let ry = Math.random() * rand * 2;
             if(Math.random() > .5) ry *= -1;
+            let rad = Math.random() * Math.PI/3 - Math.PI/6
             planets[pc].size = ((Math.random()/3) + 1) * size;
+            planets[pc].spriteData.Rotation = rad;
             if((x + rx) > (screenWidth - planets[pc].size - 10) || (x + rx) < 10 || 
                 (y + ry) > (screenHeight - planets[pc].size -10) || (y + ry) < 10){
                 planets[pc].position = new Vector(x, y);

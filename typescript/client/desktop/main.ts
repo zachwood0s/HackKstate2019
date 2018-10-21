@@ -15,7 +15,7 @@ let planets : Array<Planet> = [];
 let drawPlanets : Array<PlanetDraw> = [];
 
 // Save for real
-/*let socket = io()
+let socket = io()
 socket.on("connect", ()=>{
     console.log("Connected to server!");
 
@@ -24,20 +24,20 @@ socket.on("connect", ()=>{
 
 socket.on(Events.SERVER_TICK, (planets: Planet[])=>{
     ReceiveData(planets);
-});*/
+});
 
 window.onload = () => {
     canvas = new Canvas();
     let background = new Image();
-    background.src = "./Content/Backgrounds/00.png"
+    background.src = "/views/Content/Backgrounds/00.png"
 
     // Temp
-    planets = GeneratePlanets(32, canvas.Width, canvas.Height)
+    /*planets = GeneratePlanets(32, canvas.Width, canvas.Height)
     planets[2].hovered = [new Player(2), new Player(1)]
     planets[5].owner = new Player(2)
     planets[1].owner = new Player(1)
     let link = new Link(planets[1], planets[5], 3, ResourceType.Labor, 1);
-    planets[1].outputs = [link]
+    planets[1].outputs = [link]*/
 
     let render = () => {
         canvas.Clear();
@@ -97,7 +97,7 @@ function AddPlanet(planet : Planet) : PlanetDraw | null {
     if(canvas.Ctx == null) return null;
     let drawPlanet = new PlanetDraw(canvas.Ctx, planet.position, planet.size, planet.name)
     drawPlanet.CreateSpriteAnimation(planet.spriteData.Src, planet.spriteData.WindowPosition, planet.spriteData.WindowSize,
-        planet.spriteData.Tics, planet.spriteData.Speed);
+        planet.spriteData.Tics, planet.spriteData.Speed, planet.spriteData.Rotation);
     return drawPlanet;
 }
 
