@@ -37,7 +37,9 @@ const sockets = (io: socketIo.Server, game: Game) =>{
             }
         })
 
-        socket.on(Events.FOCUS_SET, function(focus: Focus, planet: Planet){
+        socket.on(Events.FOCUS_SET, function(focus: Focus, planetText: string){
+            console.log(planetText);
+            let planet = parse(planetText) as Planet;
             console.log("Set focus for planet:", planet.name, Focus[focus]);
             game.setFocus(planet, focus);
         });
