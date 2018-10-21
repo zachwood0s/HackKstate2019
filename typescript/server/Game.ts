@@ -142,10 +142,27 @@ export class Game{
         let fromPlanet = this.ArrayFind(this.planets, (elm: Planet) => link.from.name == elm.name);
         if(toPlanet && fromPlanet){
             let indexFrom = this.ArrayIndex(fromPlanet.outputs, (elm: Link) => link.id == elm.id)
-            if(indexFrom) fromPlanet.outputs.slice(indexFrom, 1);
+            if(indexFrom != null){
+                fromPlanet.outputs.splice(indexFrom, 1);
+                console.log("removed from");
+            } 
             let indexTo = this.ArrayIndex(toPlanet.inputs, (elm: Link) => link.id == elm.id)
-            if(indexTo) fromPlanet.outputs.slice(indexTo, 1);
+            if(indexTo != null) {
+                console.log("removed to");
+                toPlanet.inputs.splice(indexTo, 1);
+            }
+
+            console.log("to",indexTo);
+            console.log("from",indexFrom);
+            console.log(toPlanet.inputs);
+            console.log(toPlanet.outputs);
+            console.log(fromPlanet.inputs);
+            console.log(fromPlanet.outputs);
+
+            console.log("successfully removed link bitch");
         }
+
+        if(this.pairedScreen) this.pairedScreen.emit(Events.LINK_DELETED, stringify(link));
     }
 
     public createPlayer() : Player | null{

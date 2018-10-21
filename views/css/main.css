@@ -284,9 +284,9 @@ hr{
 #insOutsList{
     position:fixed;
     padding-left:var(--insouts-padding);
-    left:calc(var(--insouts-padding) * -1);
+    left:calc(var(--insouts-padding) * -1 - 140px);
     top:0;
-    width:var(--selected-planet-bar-width);
+    width:calc(var(--selected-planet-bar-width) + 100px);
     height:100%;
     overflow:auto;
     /*
@@ -317,9 +317,16 @@ hr{
 
 #insOutsList .planet .setButton{
     position: relative;
+    box-sizing: border-box;
     width: var(--height);
     height: var(--height);
     float:right;
+    --font-size:30px;
+    padding:calc(var(--font-size) / 2 - 4px);
+    font-size:var(--font-size);
+}
+#insOutsList .planet .setButton.selected{
+    color: var(--color-green);
 }
 
 
