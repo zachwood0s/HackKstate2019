@@ -88,7 +88,14 @@ export class Game{
                 else{
                     console.log("Player already had planet selected");
                 }
-                break;
+            }
+            else{
+                for(let i = planet.hovered.length - 1; i >= 0; i--){
+                    if(planet.hovered[i].ID == player.ID){
+                        planet.hovered.splice(i,1);
+                        console.log("Player removed from hoverd:", player.ID);
+                    }
+                }
             }
         }
     }
@@ -128,7 +135,7 @@ export class Game{
     public StartGame(){
         this.GenPlanets();
         this.updateInterval = setInterval(this.update.bind(this), 100);
-        this.broadcastInterval = setInterval(this.broadcastInfo.bind(this), 1000);
+        this.broadcastInterval = setInterval(this.broadcastInfo.bind(this), 200);
     }
 
     public EndGame(){
