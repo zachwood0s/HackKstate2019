@@ -17,9 +17,10 @@ export class Game{
     private updateInterval: any;
     private broadcastInterval: any;
     private io: SocketIO.Server;
-    private avalibleIds : Array<number> = [0, 1, 2, 3, 4];
+    private avalibleIds : Array<number> = [0, 1, 2, 3];
     private nextLinkId = 0;
 
+    
     public constructor(planetCount : number, io: SocketIO.Server){
         this.io = io;
     }
@@ -130,8 +131,7 @@ export class Game{
             fromPlanet.outputs.push(newlink);
             toPlanet.inputs.push(newlink);
             this.nextLinkId++;
-
-            return newlink;
+            return new Link(fromPlanet, toPlanet, link.rate, link.type, this.nextLinkId);
         }
         return null;
     }
@@ -148,6 +148,7 @@ export class Game{
     }
 
     public createPlayer() : Player | null{
+
         let id = this.avalibleIds.pop();
         if(id){
             let newPlayer = new Player(id);
