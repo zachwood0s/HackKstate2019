@@ -8,6 +8,7 @@ import { ResourceType } from "../../shared/globals";
 import { link } from "fs";
 import { Events } from "../../shared/events";
 import { GeneratePlanets } from "../../server/GeneratePlanets";
+import {parse} from 'flatted';
 
 let canvas : Canvas;
 let planetCount : number;
@@ -22,8 +23,8 @@ socket.on("connect", ()=>{
     socket.emit(Events.SCREEN_PAIRED);
 })
 
-socket.on(Events.SERVER_TICK, (planets: Planet[])=>{
-    ReceiveData(planets);
+socket.on(Events.SERVER_TICK, (planets: string)=>{
+    ReceiveData(parse(planets));
 });
 
 window.onload = () => {

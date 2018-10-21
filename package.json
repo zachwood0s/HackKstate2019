@@ -17,6 +17,7 @@
     "del": "^3.0.0",
     "errorify": "^0.3.1",
     "express": "^4.16.4",
+    "flatted": "^1.0.3",
     "gulp": "^3.9.1",
     "gulp-typescript": "^5.0.0-alpha.3",
     "gulp-typings": "^2.0.4",

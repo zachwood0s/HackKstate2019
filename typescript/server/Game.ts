@@ -5,6 +5,7 @@ import {Planet, Focus} from '../shared/Planet';
 import { Player } from '../shared/Player';
 import { Events } from '../shared/events';
 import { GeneratePlanets } from './GeneratePlanets';
+import {stringify} from 'flatted';
 
 export class Game{
     planets : Array<PlanetServ> = new Array<PlanetServ>();
@@ -17,9 +18,10 @@ export class Game{
     private updateInterval: any;
     private broadcastInterval: any;
     private io: SocketIO.Server;
-    private avalibleIds : Array<number> = [0, 1, 2, 3, 4];
+    private avalibleIds : Array<number> = [0, 1, 2, 3];
     private nextLinkId = 0;
 
+    
     public constructor(planetCount : number, io: SocketIO.Server){
         this.io = io;
     }
@@ -108,7 +110,7 @@ export class Game{
         this.planets = GeneratePlanets(32, 1600, 775)
     }
     public broadcastInfo(){
-        this.io.sockets.emit(Events.SERVER_TICK, this.planets);
+        this.io.sockets.emit(Events.SERVER_TICK, stringify(this.planets));
     }
     public StartGame(){
         this.GenPlanets();
@@ -130,7 +132,6 @@ export class Game{
             fromPlanet.outputs.push(newlink);
             toPlanet.inputs.push(newlink);
             this.nextLinkId++;
-
             return newlink;
         }
         return null;
@@ -148,9 +149,13 @@ export class Game{
     }
 
     public createPlayer() : Player | null{
+
         let id = this.avalibleIds.pop();
         if(id){
             let newPlayer = new Player(id);
+            this.planets[this.playerCount].owner = newPlayer;
+            this.planets[this.playerCount].buffers.quantities[ResourceType.Millitary] = 30;
+            this.playerCount++;
             return newPlayer;
         }
         return null;
@@ -214,7 +219,7 @@ class Test{
         
     }
 
-    static testProduce(){
+    static TestProduce(){
         let testPlanet = new PlanetServ("TestPlanetName", 1, 1);
         testPlanet.owner = new Player(1);
 
@@ -241,7 +246,8 @@ class Test{
         console.log(testPlanet.owner.TechnologyLevel);
 
     }
+    static IAddSoMuch(){
+
+    }
 
 }
-
-Test.testProduce();

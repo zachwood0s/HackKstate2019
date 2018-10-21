@@ -4,6 +4,7 @@ import { Events } from "../../shared/events";
 import { Player } from "../../shared/Player";
 import { Link } from "../../shared/Link";
 import { ResourceType } from "../../shared/globals";
+import {stringify} from 'flatted';
 export class UIUpdater{
     private _uiElements = {
         InsOutsList: document.getElementById("insOutsList"),
@@ -80,7 +81,7 @@ export class UIUpdater{
                         let elm = this._uiElements.SetFocusDrawer!.children[i] as HTMLElement;
                         elm.classList.remove("selected");
                     }
-                    this._socket.emit(Events.FOCUS_SET, index, planet);
+                    this._socket.emit(Events.FOCUS_SET, index, stringify(planet));
                     elm.classList.add("selected");
                 } 
             }
@@ -170,7 +171,7 @@ export class UIUpdater{
                 let link: Link;
                 if(importing) link = new Link(planet, selPlanet, 10, ResourceType.Labor, 0);
                 else link = new Link(selPlanet, planet, 10, ResourceType.Labor, 0);
-                this._socket.emit(Events.LINK_CREATED, link);
+                this._socket.emit(Events.LINK_CREATED, stringify(link));
             }
 
             planetDiv.appendChild(planetIcon);
@@ -210,6 +211,7 @@ export class UIUpdater{
         if(this._uiElements.SetFocusButton){
             this._uiElements.SetFocusButton.classList.remove("shown");
         }
+        this._CloseSetFocusList();
     }
 
     private _CreateSelectedPlanetHTML(selectedPlanet: HTMLElement, planet: Planet): HTMLElement{
