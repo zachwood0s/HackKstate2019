@@ -1,9 +1,14 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto|Rubik:400,700');
 
 :root{
-    --selected-planet-bar-width: 350px;
-    --selected-planet-icon-area-height: 200px;
-    --selected-planet-icon-size: 100px;
+    --selected-planet-bar-width: 300px;
+    --selected-planet-icon-area-height: 160px;
+    --selected-planet-icon-size: 80px;
+    --insouts-slide-out: 200px;
+    --insouts-padding: 100px;
+    --menu-font-size: 18px;
+    --smaller-font-size: 12px;
+    --button-height: 35px;
     --selected-planet-icon-padding-top: calc((var(--selected-planet-icon-area-height) - var(--selected-planet-icon-size)) / 2);
     --selected-planet-icon-padding-side: calc((var(--selected-planet-bar-width) - var(--selected-planet-icon-size)) / 2);
 
@@ -94,14 +99,14 @@ hr{
     width:var(--height);
     height:var(--height);
     float:left;
-    margin-left:20px;
+    margin-left:18px;
     background:var(--color-white);
 }
 
 #planetList .planet .planetName, #insOutsList .planet .planetName{
     float:left;
     font-weight:bold;
-    font-size: 20px;
+    font-size: var(--menu-font-size);
     line-height: var(--height);
     padding:0px 30px;
     text-align: center;
@@ -145,7 +150,7 @@ hr{
     width:100%;
     text-align:center;
     bottom:5px;
-    font-size:40px;
+    font-size:35px;
     font-weight:bold;
 }
 
@@ -153,7 +158,7 @@ hr{
     --side-padding: 50px;
     --top-padding: 20px;
     --bottom-padding:60px;
-    font-size:15px;
+    font-size:var(--smaller-font-size);
     font-weight: bold;
     position:absolute;
     color : var(--color-white);
@@ -216,7 +221,7 @@ hr{
 .stat .name{
     position:relative;
     float:left;
-    font-size:15px;
+    font-size:var(--smaller-font-size);
     padding-left:10px;
     font-weight:bold;
 }
@@ -242,10 +247,9 @@ hr{
 /****** Buttons ******/
 
 .button{
-   --height: 60px;
    cursor:pointer; 
-   height:var(--height);
-   line-height: var(--height);
+   height:var(--button-height);
+   line-height: var(--button-height);
 }
 
 #inOutButtons{
@@ -273,11 +277,13 @@ hr{
 /***************************/
 
 #insOutsList{
-    position:absolute;
-    left:0;
+    position:fixed;
+    padding-left:var(--insouts-padding);
+    left:calc(var(--insouts-padding) * -1);
     top:0;
     width:var(--selected-planet-bar-width);
     height:100%;
+    overflow:auto;
     /*
     transition: .5s ease-in-out;
     */

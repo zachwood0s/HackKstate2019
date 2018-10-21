@@ -4,6 +4,7 @@ import { ResourceType } from '../shared/globals';
 import {Planet, Focus} from '../shared/Planet';
 import { Player } from '../shared/Player';
 import { Events } from '../shared/events';
+import { GeneratePlanets } from './GeneratePlanets';
 
 const planetNames = [
     "Thacaicury",
@@ -58,6 +59,7 @@ export class Game{
         this.playerCount++;
         this.nextId++;
         this.planets[this.playerCount].owner = newPlayer;
+        this.planets[this.playerCount].buffers.quantities[ResourceType.Millitary] = 30;
         console.log("Number of players:", this.playerCount);
         return newPlayer;
     }
@@ -118,22 +120,20 @@ export class Game{
     }
 
     private GenPlanets(){
-        for(let i = 0; i < 10; i++){
-            this.planets.push(new PlanetServ(planetNames[i], Math.random() * 100, Math.random() * 100));
-        }
+        this.planets = GeneratePlanets(32, 1600, 775)
     }
     public broadcastInfo(){
         this.io.sockets.emit(Events.SERVER_TICK, this.planets);
     }
     public StartGame(){
         this.GenPlanets();
-        this.planets.push(new PlanetServ("earth", 0, 0), new PlanetServ("mars", 0, 0)) 
         this.updateInterval = setInterval(this.update.bind(this), 100);
-        this.updateInterval = setInterval(this.update.bind(this), 100);
+        this.broadcastInterval = setInterval(this.broadcastInfo.bind(this), 1000);
     }
 
     public EndGame(){
         clearInterval(this.updateInterval);
+        clearInterval(this.broadcastInterval);
     }
     //////////////////////////////////////////
 
