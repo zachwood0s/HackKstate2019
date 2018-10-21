@@ -130,8 +130,9 @@ export class Game{
             let newlink = new Link(fromPlanet, toPlanet, link.rate, link.type, this.nextLinkId);
             fromPlanet.outputs.push(newlink);
             toPlanet.inputs.push(newlink);
+            let nonCircleLink = new Link(new Planet(fromPlanet.name, fromPlanet.carryingCapacity, fromPlanet.reasourceDensity), toPlanet, link.rate, link.type, this.nextLinkId);
             this.nextLinkId++;
-            return new Link(fromPlanet, toPlanet, link.rate, link.type, this.nextLinkId);
+            return nonCircleLink;
         }
         return null;
     }
