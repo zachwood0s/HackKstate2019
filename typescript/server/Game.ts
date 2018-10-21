@@ -58,6 +58,7 @@ export class Game{
         this.playerCount++;
         this.nextId++;
         this.planets[this.playerCount].owner = newPlayer;
+        this.planets[this.playerCount].buffers.quantities[ResourceType.Millitary] = 30;
         console.log("Number of players:", this.playerCount);
         return newPlayer;
     }
@@ -79,7 +80,7 @@ export class Game{
     public SelectPlanet(name: string, player: Player){
         for(let planet of this.planets){
             if(planet.name == name){
-                if(!this.arrayHas(planet.hovered, (elm: Player) => player.ID == elm.ID)){
+                if(!this.ArrayHas(planet.hovered, (elm: Player) => player.ID == elm.ID)){
                     planet.hovered.push(player)
                     console.log("Added player to hovered:", player.ID);
                 }
@@ -91,7 +92,15 @@ export class Game{
         }
     }
 
-    public arrayHas<T>(array: T[], callback: (a1: T)=>boolean){
+    public ArrayFind<T>(array: T[], callback: (a1: T)=>boolean) : T | null{
+        for(let elm of array){
+            if(callback(elm)){
+                return elm;
+            }
+        }
+        return null;
+    }
+    public ArrayHas<T>(array: T[], callback: (a1: T)=>boolean){
         for(let elm of array){
             if(callback(elm)){
                 return true;
@@ -119,13 +128,13 @@ export class Game{
     }
     public StartGame(){
         this.GenPlanets();
-        this.planets.push(new PlanetServ("earth", 0, 0), new PlanetServ("mars", 0, 0)) 
         this.updateInterval = setInterval(this.update.bind(this), 100);
-        this.updateInterval = setInterval(this.update.bind(this), 100);
+        this.broadcastInterval = setInterval(this.broadcastInfo.bind(this), 1000);
     }
 
     public EndGame(){
         clearInterval(this.updateInterval);
+        clearInterval(this.broadcastInterval);
     }
     //////////////////////////////////////////
 

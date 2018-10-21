@@ -43,7 +43,7 @@ export class UIUpdater{
 
     private _OpenInOutList(planet: Planet, input: boolean){
         console.log("Opening ins-outs list for planet: ",planet);
-        let leftPosition = window.getComputedStyle(document.body).getPropertyValue('--selected-planet-bar-width');
+        let leftPosition = window.getComputedStyle(document.body).getPropertyValue('--insouts-slide-out');
         if(this._uiElements.InsOutsList){
             this._uiElements.InsOutsList.style.left = leftPosition;
             this._CreateInsOutsList(planet, input);
@@ -123,6 +123,7 @@ export class UIUpdater{
 
         for(let planet of this._planets){
             if(planet.name == this._selectedPlanet.name) continue;
+            if(importing && (!planet.owner || planet.owner.ID != this._player.ID)) continue;
 
             let planetDiv = this._CreateDiv(undefined, "planet");
             let planetIcon = this._CreateDiv(undefined, "planetIcon"); 
@@ -233,19 +234,17 @@ export class UIUpdater{
 
         //Input/Output buttons
         let inputOutputButtons = this._CreateDiv("inOutButtons");
+        let inputButton = this._CreateDiv("inputButton", "button", "white", "colorDark");
+        inputButton.innerHTML = "Inputs";
+        inputButton.onclick = this._ToggleInOutList(planet, true);
+        inputOutputButtons.appendChild(inputButton);
+
         if(planet.owner && planet.owner.ID == this._player.ID){
-            let inputButton = this._CreateDiv("inputButton", "button", "white", "colorDark");
-            inputButton.innerHTML = "Inputs";
-            inputButton.onclick = this._ToggleInOutList(planet, true);
-            inputOutputButtons.appendChild(inputButton);
+            let outputButton = this._CreateDiv("outputButton", "button", "white", "colorDark");
+            outputButton.innerHTML = "Outputs";
+            outputButton.onclick = this._ToggleInOutList(planet, false);
+            inputOutputButtons.appendChild(outputButton);
         }
-
-        let outputButton = this._CreateDiv("outputButton", "button", "white", "colorDark");
-        outputButton.innerHTML = "Outputs";
-        outputButton.onclick = this._ToggleInOutList(planet, false);
-
-        inputOutputButtons.appendChild(outputButton);
-        console.log(outputButton)
         
         selectedPlanet.appendChild(mainIcon);
         selectedPlanet.appendChild(hr);
@@ -253,7 +252,6 @@ export class UIUpdater{
         selectedPlanet.appendChild(capacity);
         selectedPlanet.appendChild(inputOutputButtons);
 
-        console.log(outputButton)
 
         return selectedPlanet;
     }
