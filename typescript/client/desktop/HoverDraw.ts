@@ -50,6 +50,7 @@ class HoverDraw {
                 this._ctx.globalAlpha = this.HOVERALFA;
                 this._ctx.fillStyle = this.COLORS[playerNum - 1]
                 this._ctx.fill();
+                this._ctx.globalAlpha = 1;
                 i++
             });  
         }
