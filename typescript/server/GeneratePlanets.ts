@@ -1,24 +1,25 @@
 import { Planet } from "../shared/Planet";
 import { Vector } from "../shared/Vector";
 import { PlanetServ } from "./PlanetServ";
+import { Buffer } from "../shared/Planet"
 
 let rotSpeed = 8;
 let size = 50;
-let resMin = 50;
-let resMax = 100;
 let rand = 37;
 function GeneratePlanets(amount: number, screenWidth : number, screenHeight : number) : Array<PlanetServ> {
-    let resVal = Math.floor(Math.random() * resMax) + resMin;
-    let labVal = Math.floor(Math.random() * resMax) + resMin;
     let planets : Array<PlanetServ> = []
     for (let i = 0; i < amount; i++) {
+        let resMax = Buffer.BUFFER_MAX;
+        let resMin = resMax - (resMax / 2)
+        let resVal = Math.floor(Math.random() * (resMax - resMin)) + resMin;
+        let labVal = Math.floor(Math.random() * (resMax - resMin)) + resMin;
         let p = new PlanetServ("Planet " + (i+1), labVal, resVal)
         planets.push(p)
     }
 
     // Set Animation
     for (let i = 0; i < planets.length; i++){
-        planets[i].spriteData.Src = "/views/Content/PlanetSprites/01.png"
+        planets[i].spriteData.Src = "./Content/PlanetSprites/01.png"
         planets[i].spriteData.WindowPosition = new Vector(0,0);
         planets[i].spriteData.WindowSize = new Vector(50, 50);
         planets[i].spriteData.Tics = 200;
