@@ -130,7 +130,8 @@ export class Game{
             let newlink = new Link(fromPlanet, toPlanet, link.rate, link.type, this.nextLinkId);
             fromPlanet.outputs.push(newlink);
             toPlanet.inputs.push(newlink);
-            let nonCircleLink = new Link(new Planet(fromPlanet.name, fromPlanet.carryingCapacity, fromPlanet.reasourceDensity), toPlanet, link.rate, link.type, this.nextLinkId);
+            let nonCircleLink = new Link(new Planet(fromPlanet.name, fromPlanet.carryingCapacity, fromPlanet.reasourceDensity),
+                new Planet(toPlanet.name, toPlanet.carryingCapacity, toPlanet.reasourceDensity), link.rate, link.type, this.nextLinkId);
             this.nextLinkId++;
             return nonCircleLink;
         }
@@ -216,7 +217,7 @@ class Test{
         
     }
 
-    static testProduce(){
+    static TestProduce(){
         let testPlanet = new PlanetServ("TestPlanetName", 1, 1);
         testPlanet.owner = new Player(1);
 
@@ -241,6 +242,9 @@ class Test{
             console.log(testPlanet.buffers.quantities[i]);
         }
         console.log(testPlanet.owner.TechnologyLevel);
+
+    }
+    static IAddSoMuch(){
 
     }
 
