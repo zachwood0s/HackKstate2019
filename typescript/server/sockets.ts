@@ -4,7 +4,8 @@ import { Game } from './Game';
 import { Player } from '../shared/Player';
 import { Link } from '../shared/Link';
 import { Focus, Planet, SpriteData } from '../shared/Planet';
-import {parse} from 'flatted';
+import {stringify, parse} from 'flatted';
+import { ResourceType } from '../shared/globals';
 
 const sockets = (io: socketIo.Server, game: Game) =>{
     console.log("sockets started");
@@ -43,25 +44,26 @@ const sockets = (io: socketIo.Server, game: Game) =>{
 
         socket.on(Events.LINK_CREATED, function(linkText: string){
             let link = parse(linkText) as Link;
-            console.log("A link has been created", link.from.name, "->", link.to.name, link.id, link.type);
+            console.log("A link has been created", link.from.name, "->", link.to.name, link.id, ResourceType[link.type]);
 
             let newLink = game.createLink(link);
             if(newLink){
-                console.log("link succeeded");
+                console.log("link succeeded", newLink.id);
                 //console.log(newLink);
                 //newLink.from.spriteData = new SpriteData();
                 //newLink.to.spriteData = new SpriteData();
                 //let stringed = JSON.stringify(newLink);
-                //socket.emit(Events.LINK_ID, JSON.stringify(newLink));
+                socket.emit(Events.LINK_ID, stringify(newLink));
             }
             else{
                 console.log("link failed");
             }
         })
         //-----
-        socket.on(Events.LINK_DELETED, function(){
-            console.log('Screen has been paired!');
-            game.PairScreen(socket);
+        socket.on(Events.LINK_DELETED, function(linkText: string){
+            let link = parse(linkText) as Link;
+            console.log('A link has been deleted', link.from.name, '->', link.to.name, link.id, link.type);
+            game.deleteLink(link);
         })
 
 

@@ -4,7 +4,7 @@ import { Events } from "../../shared/events";
 import { Player } from "../../shared/Player";
 import { Link } from "../../shared/Link";
 import { ResourceType } from "../../shared/globals";
-import {stringify} from 'flatted';
+import {parse, stringify} from 'flatted';
 export class UIUpdater{
     private _uiElements = {
         InsOutsList: document.getElementById("insOutsList"),
@@ -15,10 +15,11 @@ export class UIUpdater{
     }
 
     private _planets: Planet[];
-    private _socket: SocketIOClient.Socket;
+    public _socket: SocketIOClient.Socket;
     private _player: Player;
     private _planetListDivs: HTMLElement[];
     private _selectedPlanet: Planet | null;
+    public _handlers : Array<Function>;
 
     constructor(socket: SocketIOClient.Socket, player: Player){
         this._planets = [];
@@ -26,6 +27,14 @@ export class UIUpdater{
         this._player = player;
         this._planetListDivs = [];
         this._selectedPlanet = null;
+        this._handlers = [];
+
+        this._socket.on(Events.LINK_ID, (linkText: string) => {
+            let link: Link = parse(linkText) as Link;
+            for(let fn of this._handlers){
+                fn(link);
+            }
+        });
     }
 
     private _ToggleInOutList(planet: Planet, input: boolean){
@@ -166,17 +175,27 @@ export class UIUpdater{
             let planetIcon = this._CreateDiv(undefined, "planetIcon"); 
             let planetName = this._CreateDiv(undefined, "planetName", "colorWhite");
             planetName.innerHTML = planet.name;
-            let setButton = this._CreateDiv(undefined, "setButton", "dark");
-            setButton.onclick = () => {
+
+            let setMatButton = this._CreateDiv(undefined, "setButton", "dark", "icon-cogs", "colorWhite");
+            setMatButton.onclick = () => setButtonClick(this,ResourceType.Material, setMatButton, importing, planet, selPlanet);
+            let setMiltButton = this._CreateDiv(undefined, "setButton", "dark", "icon-shield", "colorWhite");
+            setMiltButton.onclick = () => setButtonClick(this,ResourceType.Millitary, setMiltButton, importing, planet, selPlanet);
+            let setLabButton = this._CreateDiv(undefined, "setButton", "dark", "icon-user", "colorWhite");
+            setLabButton.onclick = () => setButtonClick(this,ResourceType.Labor, setLabButton, importing, planet, selPlanet);
+            /*
+            setMatButton.onclick = () => {
                 let link: Link;
                 if(importing) link = new Link(planet, selPlanet, 10, ResourceType.Labor, 0);
                 else link = new Link(selPlanet, planet, 10, ResourceType.Labor, 0);
                 this._socket.emit(Events.LINK_CREATED, stringify(link));
             }
+            */
 
             planetDiv.appendChild(planetIcon);
             planetDiv.appendChild(planetName);
-            planetDiv.appendChild(setButton);
+            planetDiv.appendChild(setMatButton);
+            planetDiv.appendChild(setMiltButton);
+            planetDiv.appendChild(setLabButton);
 
             this._uiElements.InsOutsList.appendChild(planetDiv);
         }
@@ -307,5 +326,25 @@ export class UIUpdater{
         if(id != "") elm.id = id;
         elm.classList.add(...classes);
         return elm;
+    }
+}
+
+function setButtonClick(obj: UIUpdater, type: ResourceType, elm: HTMLElement, importing: boolean, planet: Planet, selPlanet: Planet){
+    
+    if(!(<any>elm).createdLink){
+        let link: Link;
+        if(importing) link = new Link(planet, selPlanet, 1, type, 0);
+        else link = new Link(selPlanet, planet, 1, type, 0);
+        obj._socket.emit(Events.LINK_CREATED, stringify(link));
+        elm.classList.add("selected");
+        obj._handlers.push((link: Link)=>{
+            (<any>elm).createdLink = link;
+        })
+    }
+    else{
+        console.log("Removed link", (<any>elm).createdLink);
+        obj._socket.emit(Events.LINK_DELETED, stringify((<any>elm).createdLink));
+        (<any>elm).createdLink = null;
+        elm.classList.remove("selected");
     }
 }

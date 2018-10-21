@@ -59,9 +59,11 @@ class PlanetDraw {
     }
 
     public RemoveTransfer(id : number){
+        console.log(this._transfers.length);
         for (let i = 0; i < this._transfers.length; i++){
             if(this._transfers[i]._ID == id) {
                 this._transfers.splice(i, 1);
+                console.log(this._transfers.length);
                 break;
             }
         }

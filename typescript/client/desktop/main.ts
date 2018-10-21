@@ -23,9 +23,14 @@ socket.on("connect", ()=>{
     socket.emit(Events.SCREEN_PAIRED);
 })
 
-socket.on(Events.SERVER_TICK, (planets: string)=>{
-    ReceiveData(parse(planets));
+socket.on(Events.SERVER_TICK, (p: string)=>{
+    planets = ReceiveData(parse(p));
 });
+
+socket.on(Events.LINK_DELETED, (linkText: string) => {
+    let link = parse(linkText) as Link;
+    RemoveLink(link);
+})
 
 window.onload = () => {
     canvas = new Canvas();
@@ -60,12 +65,13 @@ window.onload = () => {
     render();
 }
 
-function ReceiveData(planets : Array<Planet>) {
+function ReceiveData(planets : Array<Planet>) : Array<Planet> {
     if (drawPlanets.length == 0)
         InitializeData(planets)
     for (let i = 0; i < planets.length; i++) {
         SetPlanet(drawPlanets[i], planets[i])
     }
+    return planets;
 }
 
 function InitializeData(planets : Array<Planet>) {
@@ -85,7 +91,9 @@ function RemoveLink(link : Link) {
             if(planet.outputs[i].id == link.id) {
                 for(let j = 0; j < drawPlanets.length; j++) {
                     if(drawPlanets[j].name == planet.name) {
+                        console.log(drawPlanets[j]);
                         drawPlanets[j].RemoveTransfer(link.id);
+                        console.log(drawPlanets[j]);
                         break;
                     }
                 }               
@@ -111,7 +119,7 @@ function SetPlanet(drawPlanet: PlanetDraw, planet : Planet) : void  {
     if (planet.owner != null) drawPlanet.SetOwner(planet.owner.id + 1);
 
     planet.outputs.forEach(out => {
-        console.log("adding");
+        console.log("adding", planet);
         if (planet.owner != null)
             drawPlanet.AddTransfer(out.to.position, out.type, out.rate, out.id, planet.owner.id + 1)
     });
