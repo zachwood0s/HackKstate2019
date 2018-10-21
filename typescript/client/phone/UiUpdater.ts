@@ -1,4 +1,4 @@
-import { Planet } from "../../shared/Planet";
+import { Planet, Focus } from "../../shared/Planet";
 import {Buffer} from "../../shared/Planet";
 import { Events } from "../../shared/events";
 import { Player } from "../../shared/Player";
@@ -8,7 +8,9 @@ export class UIUpdater{
     private _uiElements = {
         InsOutsList: document.getElementById("insOutsList"),
         PlanetList: document.getElementById("planetList"),
-        SelectedPlanet: document.getElementById("selectedPlanet")
+        SelectedPlanet: document.getElementById("selectedPlanet"),
+        SetFocusButton: document.getElementById("setFocusButton"),
+        SetFocusDrawer: document.getElementById("setFocusDrawer")
     }
 
     private _planets: Planet[];
@@ -28,14 +30,11 @@ export class UIUpdater{
     private _ToggleInOutList(planet: Planet, input: boolean){
         return () => {
             if(this._uiElements.InsOutsList){
-                let isOpen = this._uiElements.InsOutsList.offsetLeft > 0;
-                if(isOpen){
+                if(this._uiElements.InsOutsList.classList.contains("open")){
                     this._CloseInOutList();
-                    isOpen = false;
                 }
                 else{
                     this._OpenInOutList(planet, input);
-                    isOpen = true;
                 }
             }
         }
@@ -52,6 +51,45 @@ export class UIUpdater{
     private _CloseInOutList(){
         if(this._uiElements.InsOutsList){
             this._uiElements.InsOutsList.classList.remove("open");
+        }
+    }
+
+    private _ToggleSetFocusList(planet: Planet){
+        return () => {
+            if(this._uiElements.SetFocusDrawer){
+                if(this._uiElements.SetFocusDrawer.classList.contains("open")){
+                    this._CloseSetFocusList();
+                }
+                else{
+                    this._OpenSetFocusList(planet);
+                }
+            }
+        }
+    }
+
+    private _OpenSetFocusList(planet: Planet){
+        if(this._uiElements.SetFocusDrawer){
+            this._uiElements.SetFocusDrawer.classList.add("open");
+
+            for(let i = 0; i<this._uiElements.SetFocusDrawer.children.length; i++){
+                let elm = this._uiElements.SetFocusDrawer.children[i] as HTMLElement;
+                let index = parseInt(elm.getAttribute("data-type")!);
+
+                elm.onclick = () => {
+                    for(let i = 0; i<this._uiElements.SetFocusDrawer!.children.length; i++){
+                        let elm = this._uiElements.SetFocusDrawer!.children[i] as HTMLElement;
+                        elm.classList.remove("selected");
+                    }
+                    this._socket.emit(Events.FOCUS_SET, index, planet);
+                    elm.classList.add("selected");
+                } 
+            }
+        } 
+    }
+
+    private _CloseSetFocusList(){
+        if(this._uiElements.SetFocusDrawer){
+            this._uiElements.SetFocusDrawer.classList.remove("open");
         }
     }
 
@@ -154,6 +192,11 @@ export class UIUpdater{
             console.log(document.getElementById("outputButton"));
         }
 
+        if(planet.owner && planet.owner.ID == this._player.ID && this._uiElements.SetFocusButton){
+            this._uiElements.SetFocusButton.classList.add("shown");
+            this._uiElements.SetFocusButton.onclick = this._ToggleSetFocusList(planet);
+        }
+
         console.log("Sendeng selected planet:",planet.name);
         this._socket.emit(Events.SELECTED_PLANET, planet.name);
     }
@@ -163,6 +206,9 @@ export class UIUpdater{
             this._selectedPlanet = null;
             this._uiElements.SelectedPlanet.classList.remove("open");
             this._CloseInOutList();
+        }
+        if(this._uiElements.SetFocusButton){
+            this._uiElements.SetFocusButton.classList.remove("shown");
         }
     }
 

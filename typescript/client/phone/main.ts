@@ -10,10 +10,6 @@ socket.on("connect", ()=>{
     console.log("Connected to server!");
 })
 
-socket.on(Events.SERVER_TICK, (planets: Planet[])=>{
-
-});
-
 
 window.onload = () =>{
     socket.emit(Events.PLAYER_JOINED);
@@ -24,7 +20,7 @@ window.onload = () =>{
     });
 
     document.onclick = function (argument) {
-       // launchIntoFullscreen(document.documentElement);
+       launchIntoFullscreen(document.documentElement);
     }
 } 
 function launchIntoFullscreen(element: any) {
@@ -51,7 +47,6 @@ function setupGame(player: Player){
 
     socket.on(Events.SERVER_TICK, function(planets: Planet[]){
         updater.UpdatePlanets(planets);
-        console.log("recieved server tick", planets);
     });
 }
 

@@ -9,6 +9,7 @@
     --menu-font-size: 18px;
     --smaller-font-size: 12px;
     --button-height: 35px;
+    --set-focus-button-height:60px;
     --selected-planet-icon-padding-top: calc((var(--selected-planet-icon-area-height) - var(--selected-planet-icon-size)) / 2);
     --selected-planet-icon-padding-side: calc((var(--selected-planet-bar-width) - var(--selected-planet-icon-size)) / 2);
 
@@ -322,3 +323,51 @@ hr{
 }
 
 
+
+
+/****************/
+/*    Focus     */
+/****************/
+
+#setFocusButton{
+    width:270px;
+    position:fixed;
+    right:0;
+    bottom:0;
+    height:var(--set-focus-button-height);
+    text-align: center;
+    font-weight: bold;
+    visibility: hidden;
+    line-height:var(--set-focus-button-height);
+}
+#setFocusButton.shown{
+    visibility: visible;
+}
+
+#setFocusDrawer{
+    --icon-height:60px;
+    width: calc(var(--icon-height) * 5 + 100px);
+    height:var(--icon-height);
+    position:fixed;
+    bottom:var(--set-focus-button-height);
+    right:calc(var(--icon-height) * -5 - 100px);
+	transition: 500ms cubic-bezier(.75,-0.5,0,1.75);
+}
+#setFocusDrawer.open{
+    right:-130px;
+}
+
+#setFocusDrawer span{
+    --font-size: 30px;
+    padding:calc(var(--font-size) / 2);
+    box-sizing: border-box;
+    display: inline-block;
+    width:var(--icon-height);
+    height:var(--icon-height);
+    font-size: var(--font-size);
+    cursor:pointer;
+}
+
+#setFocusDrawer span.selected{
+    color: var(--color-green);
+}
