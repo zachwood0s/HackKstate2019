@@ -218,7 +218,6 @@ class Test{
         let testPlanet = new PlanetServ("TestPlanetName", 1, 1);
         testPlanet.owner = new Player(1);
 
-
         for(var i = 0; i < 50; i++ ){
             testPlanet.focus = Focus.Labor;
             testPlanet.Update();
