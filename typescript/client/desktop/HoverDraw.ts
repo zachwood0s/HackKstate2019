@@ -61,6 +61,13 @@ class HoverDraw {
             this._ctx.strokeStyle = HoverDraw.COLORS[this._owner - 1]
             this._ctx.stroke();
         }
+        else {
+            this._ctx.beginPath();
+            this._ctx.lineWidth = 4;
+            this._ctx.arc(this._position.x, this._position.y, this._radiusOwner, 0, Math.PI*2);
+            this._ctx.strokeStyle = "#424242"
+            this._ctx.stroke();
+        }
     }
 }
 

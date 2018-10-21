@@ -43,6 +43,7 @@ const planetNames = [
 let rotSpeed = 8;
 let size = 50;
 let rand = 37;
+let planetSize = 3;
 function GeneratePlanets(amount: number, screenWidth : number, screenHeight : number) : Array<PlanetServ> {
     let planets : Array<PlanetServ> = []
     for (let i = 0; i < amount; i++) {
@@ -56,7 +57,8 @@ function GeneratePlanets(amount: number, screenWidth : number, screenHeight : nu
 
     // Set Animation
     for (let i = 0; i < planets.length; i++){
-        planets[i].spriteData.Src = "/views/Content/PlanetSprites/00.png"
+        let p = Math.floor(Math.random() * planetSize);
+        planets[i].spriteData.Src = "./views/Content/PlanetSprites/" + p + ".png"
         planets[i].spriteData.WindowPosition = new Vector(0,0);
         planets[i].spriteData.WindowSize = new Vector(75, 75);
         planets[i].spriteData.Tics = 200;
