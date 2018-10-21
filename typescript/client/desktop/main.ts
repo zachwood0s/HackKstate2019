@@ -117,6 +117,7 @@ function SetPlanet(drawPlanet: PlanetDraw, planet : Planet) : void  {
     });
 
     if (planet.owner != null) drawPlanet.SetOwner(planet.owner.id + 1);
+    else drawPlanet.SetOwner(-1);
 
     planet.outputs.forEach(out => {
         console.log("adding", planet);
