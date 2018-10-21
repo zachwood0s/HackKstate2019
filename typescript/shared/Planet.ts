@@ -18,6 +18,7 @@ export class Buffer{
 
 export class SpriteData {
     public Src : string = "";
+    public Rotation : number = 0;
     public WindowPosition : Vector = new Vector(0, 0);
     public WindowSize : Vector = new Vector(0, 0);
     public Tics : number = 0;
