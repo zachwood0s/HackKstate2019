@@ -56,7 +56,7 @@ function GeneratePlanets(amount: number, screenWidth : number, screenHeight : nu
 
     // Set Animation
     for (let i = 0; i < planets.length; i++){
-        planets[i].spriteData.Src = "./Content/PlanetSprites/00.png"
+        planets[i].spriteData.Src = "/views/Content/PlanetSprites/00.png"
         planets[i].spriteData.WindowPosition = new Vector(0,0);
         planets[i].spriteData.WindowSize = new Vector(75, 75);
         planets[i].spriteData.Tics = 200;

@@ -29,7 +29,7 @@ socket.on(Events.SERVER_TICK, (planets: Planet[])=>{
 window.onload = () => {
     canvas = new Canvas();
     let background = new Image();
-    background.src = "./Content/Backgrounds/00.png"
+    background.src = "/views/Content/Backgrounds/00.png"
 
     // Temp
     planets = GeneratePlanets(32, canvas.Width, canvas.Height)
