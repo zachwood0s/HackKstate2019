@@ -43,7 +43,7 @@ export class UIUpdater{
 
     private _OpenInOutList(planet: Planet, input: boolean){
         console.log("Opening ins-outs list for planet: ",planet);
-        let leftPosition = window.getComputedStyle(document.body).getPropertyValue('--selected-planet-bar-width');
+        let leftPosition = window.getComputedStyle(document.body).getPropertyValue('--insouts-slide-out');
         if(this._uiElements.InsOutsList){
             this._uiElements.InsOutsList.style.left = leftPosition;
             this._CreateInsOutsList(planet, input);
@@ -111,9 +111,6 @@ export class UIUpdater{
 
             let UIUpdater = this;
             planetDiv.onclick = function(){
-                if(planetDiv.requestFullscreen){
-                    planetDiv.requestFullscreen();
-                }
                 UIUpdater.OpenSelectedPlanetsList((<any>this).planet);
             }
         }

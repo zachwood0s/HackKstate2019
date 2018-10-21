@@ -4,6 +4,8 @@
     --selected-planet-bar-width: 300px;
     --selected-planet-icon-area-height: 160px;
     --selected-planet-icon-size: 80px;
+    --insouts-slide-out: 200px;
+    --insouts-padding: 100px;
     --menu-font-size: 18px;
     --smaller-font-size: 12px;
     --button-height: 35px;
@@ -276,7 +278,8 @@ hr{
 
 #insOutsList{
     position:fixed;
-    left:0;
+    padding-left:var(--insouts-padding);
+    left:calc(var(--insouts-padding) * -1);
     top:0;
     width:var(--selected-planet-bar-width);
     height:100%;
