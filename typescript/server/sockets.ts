@@ -41,8 +41,14 @@ const sockets = (io: socketIo.Server, game: Game) =>{
         });
 
         socket.on(Events.LINK_CREATED, function(link: Link){
-            console.log("A link has been created", link.from, link.to, link.id, link.type);
+            console.log("A link has been created", link.from.name, "->", link.to.name, link.id, link.type);
 
+            let newLink = game.createLink(link);
+            if(newLink){
+                console.log(newLink);
+                socket.emit(Events.LINK_ID, newLink);
+                console.log("Sent link", newLink);
+            }
         })
         //-----
         socket.on(Events.LINK_DELETED, function(){
