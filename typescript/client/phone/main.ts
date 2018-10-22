@@ -6,7 +6,6 @@ import { Player } from '../../shared/Player';
 import {parse} from 'flatted';
 
 let socket = io();
-
 socket.on("connect", ()=>{
     console.log("Connected to server!");
 })

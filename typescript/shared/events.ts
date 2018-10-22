@@ -1,13 +1,13 @@
 
 export enum Events {
-        SELECTED_PLANET = "selected_planet",
-        SERVER_TICK = "server_tick",
-        SCREEN_PAIRED = "screen_paired",
-        PLAYER_JOINED = "player_joined",
-        LINK_CREATED = "link_created",
-        LINK_DELETED = "link_deleted",
-        PLAYER_ID = "player_id",
-        LINK_ID = "link_id",
-        FOCUS_SET = "focus_set",
+        SELECTED_PLANET = "SELECTED_PLANET",
+        SERVER_TICK = "SERVER_TICK",
+        SCREEN_PAIRED = "SCREEN_PAIRED",
+        PLAYER_JOINED = "PLAYER_JOINED",
+        LINK_CREATED = "LINK_CREATED",
+        LINK_DELETED = "LINK_DELETED",
+        PLAYER_ID = "PLAYER_ID",
+        LINK_ID = "LINK_ID",
+        FOCUS_SET = "FOCUS_SET",
 }
 
