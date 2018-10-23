@@ -14,13 +14,17 @@ class FakeSocket implements SocketAdapter{
     public DoFakeBroadcast(evt: string, ...data: any[]){
         if(this._handlers[evt]){
             this._handlers[evt].ForEach(elm => {
-                if(elm) elm(...data);
+                if(elm) elm(data);
             });
         }
     }
+    public emit(evt: string, ...args: any[]){};
 }
 describe('SocketManager', () => {
-    let fakeSocket = new FakeSocket();
+    let fakeSocket: FakeSocket;
+    beforeEach(() => {
+        fakeSocket = new FakeSocket();
+    })
     it("Can register a handler", ()=>{
         let m = new SocketManager(fakeSocket);
         let wasTriggered = false;
@@ -119,4 +123,35 @@ describe('SocketManager', () => {
         fakeSocket.DoFakeBroadcast(Events.PLAYER_ID, expected);
         expect(passedString).to.equal(expected);
     })
+
+    it("Can pass multiple pieces of data through an event", () => {
+        let m = new SocketManager(fakeSocket);
+        let passedString = "";
+        let passedNumber = 0;
+        let expected = "Hello";
+        let expectedNum = 10;
+        m.Register(Events.PLAYER_ID, {
+            handler: (data1:string, data2: number) => {
+                passedNumber = data2;
+                passedString = data1;
+            }
+        })
+        fakeSocket.DoFakeBroadcast(Events.PLAYER_ID, expected, expectedNum);
+        expect(passedString).to.equal(expected);
+        expect(passedNumber).to.equal(expectedNum);
+    });
+    it("Can pass multiple arguments into a predicate", () => {
+        let m = new SocketManager(fakeSocket);
+        let wasTriggered = false;
+        let num = 10;
+        let num2 = 15;
+        m.Register(Events.PLAYER_ID, {
+            predicates: [(data: number, data2: number) => data == num && data2 == num2],
+            handler: (data: number, data2: number) => {
+                wasTriggered = true;
+            }
+        })        
+        fakeSocket.DoFakeBroadcast(Events.PLAYER_ID, num, num2);
+        expect(wasTriggered).to.equal(true);
+    });
 });
