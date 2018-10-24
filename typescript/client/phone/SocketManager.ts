@@ -2,18 +2,19 @@ import {Events} from '../../shared/events';
 import {List} from 'linqts';
 
 export interface SocketAdapter{
-    on(event: String, handler: Function) : void;
+    on(event: string, handler: Function) : void;
+    emit(event: string, args: any[]): void;
 }
 
 export type Predicate<T> = (...e: T[]) => boolean;
 
-export interface EventHandler<T>{
-    predicates?: Predicate<T|any>[];
-    handler: (...e: (T | any)[]) => void;
+export interface EventHandler{
+    predicates?: Predicate<any>[];
+    handler: (...e: any[]) => void;
 }
 
 export class SocketManager{
-    private _handlers: {[event: string]: List<EventHandler<any>>} = {};
+    private _handlers: {[event: string]: List<EventHandler>} = {};
     private _socket: SocketAdapter;
 
     constructor(socket: SocketAdapter){
@@ -30,18 +31,18 @@ export class SocketManager{
         }
     }
 
-    public Register<T>(event: string, handler: EventHandler<T>){
+    public Register<T>(event: string, handler: EventHandler){
         if(!this._handlers[event]){
-            this._handlers[event] = new List<EventHandler<T>>();
+            this._handlers[event] = new List<EventHandler>();
         }
         this._handlers[event].Add(handler);
     }
 
-    private _HandleOn(event: string, ...data: any[]){
+    private _HandleOn(event: string, data: any[]){
         if(this._handlers[event]){
             this._handlers[event].ForEach(elm => {
                 if(elm){
-                    if(!elm.predicates || elm.predicates.every(p => p(elm))){
+                    if(!elm.predicates || elm.predicates.every(p => p(...data))){
                         elm.handler(...data)
                     }
                 }
