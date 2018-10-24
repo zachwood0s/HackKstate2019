@@ -118,5 +118,8 @@ describe('SocketManager', () => {
         })
         fakeSocket.DoFakeBroadcast(Events.PLAYER_ID, expected);
         expect(passedString).to.equal(expected);
+    });
+    it("Can pass multiple data types through an event", () => {
+        let m = new SocketManager(fakeSocket);
     })
 });
