@@ -1,7 +1,7 @@
 import { Planet } from "../../shared/Planet";
 import { List } from "linqts";
 import { SocketAdapter, SocketManager } from "./SocketManager";
-
+import { HTMLElementBuilder } from "../../shared/HTMLElementBuilder";
 
 class PlanetListElement{
     private _planet: Planet;
@@ -18,7 +18,15 @@ class PlanetListElement{
     }
 
     private _CreateHTMLElement(){
-        
+        let div = new HTMLElementBuilder("div");
+        let planetDiv = div.WithClasses("planet").Build();
+        let planetIcon = div.WithClasses("planetIcon").Build();
+        let planetName = div.WithClasses("planetName", "colorWhite")
+                            .WithInnerHTML(this._planet.name)
+                            .Build();
+        planetDiv.appendChild(planetIcon);
+        planetDiv.appendChild(planetName);
+
     }
 }
 
